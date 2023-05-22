@@ -135,15 +135,16 @@ function Header() {
   // variants
   const navVars = {
     top: {
-      backgroundImage: "linear-gradient(180deg,rgba(0,0,0,.7) 10%,transparent",
+      backgroundImage: "linear-gradient(180deg,rgba(0,0,0,.7) 10%,transparent)",
     },
     scroll: {
-      backgroundImage: "rgba(0,0,0,1)",
+      background: "rgba(0,0,0,1)",
     },
   };
 
   // scroll 감지
-  useMotionValueEvent(scrollY, "change", () => {
+  useMotionValueEvent(scrollY, "change", (d) => {
+    console.log(d);
     if (scrollY.get() > 80) {
       navAnimation.start("scroll");
     } else {
@@ -152,7 +153,7 @@ function Header() {
   });
 
   return (
-    <Nav variants={navVars} initial="top" animate={navAnimation}>
+    <Nav initial="top" variants={navVars} animate={navAnimation}>
       <Col>
         <Logo
           variants={logoVars}

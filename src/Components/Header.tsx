@@ -194,7 +194,7 @@ function Header() {
           </motion.svg>
           <Input
             animate={inputAnimation}
-            initial={{ scaleX: 0, background:"rgba(0, 0, 0, 0.137)" }}
+            initial={{ scaleX: 0, background:"rgba(0, 0, 0, 0)" }}
             transition={{ ease: "linear" }}
             placeholder="검색"
           />

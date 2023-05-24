@@ -12,5 +12,10 @@ declare module "styled-components" {
       darker: string;
       lighter: string;
     };
+    fontSize: {
+      bigFont: string;
+      nomalFont: string;
+      smallFont: string;
+    };
   }
 }

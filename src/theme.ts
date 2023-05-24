@@ -11,4 +11,9 @@ export const darkTheme: DefaultTheme = {
     lighter: "#fff",
     darker: "#e5e5e5",
   },
+  fontSize:{
+    bigFont:"50px",
+    nomalFont:"17px",
+    smallFont:"13px",
+  }
 };

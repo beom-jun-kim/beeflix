@@ -18,3 +18,5 @@ function App() {
 }
 
 export default App;
+
+// https://developer.themoviedb.org/reference/movie-now-playing-list

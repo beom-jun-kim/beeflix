@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { makeImagePath } from "../utilities";
 
 const Wrapper = styled.div`
+height: 200vh;
   background-color: black;
 `;
 const Loader = styled.div`

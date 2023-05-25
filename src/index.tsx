@@ -5,7 +5,7 @@ import { ThemeProvider } from "styled-components";
 import { createGlobalStyle } from "styled-components";
 import { darkTheme } from "./theme";
 import { RecoilRoot } from "recoil";
-import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +30,10 @@ const GlobalStyle = createGlobalStyle`
     font-size: 100%;
     font: inherit;
     vertical-align: baseline;
+  }
+
+  html {
+    overflow-x: hidden;
   }
   /* HTML5 display-role reset for older browsers */
   article, aside, details, figcaption, figure,

@@ -55,41 +55,58 @@ const Row = styled(motion.div)`
   width: 100%;
 `;
 
-const Box = styled(motion.div)`
+const Box = styled(motion.div)<{ bgPhoto: string }>`
   background: green;
   height: 200px;
   line-height: 200px;
   text-align: center;
   font-size: 30px;
+  background-image: url(${(props) => props.bgPhoto});
+  background-size: cover;
+  background-position: center center;
 `;
 
 function Home() {
   const { isLoading, data } = useQuery<IMovieProps>(
-    // movies라는 데이터 이름의 nowPlaying이라는 식별자를 가진 데이터를 가져오고, 이를 캐싱하여 재사용
     // 현재 상영 중인(now playing) 영화에 대한 데이터임을 구분하기 위한 식별자
     ["movies", "nowPlaying"],
     getMovies
   );
 
   const [index, setIndex] = useState(0);
-  const slideBtn = () => setIndex((prev) => prev + 1);
+  const [leaving, setLeaving] = useState(false);
+  const slideBtn = () => {
+    // if문으로 감싸주지 않으면 data가 number || undefined이기 때문
+    if (data) {
+      if (leaving) return;
+      toggleLeaving();
 
+      // 메인 배너 영화 1개를 썼기 때문에 -1
+      const totalMovie = data.results.length - 1;
 
+      // ceil : 올림처리
+      // page가 0에서 시작하기 때문에 -1
+      const maxIndex = Math.floor(totalMovie / offset) - 1;
+      setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
+    }
+  };
+
+  const toggleLeaving = () => setLeaving((prev) => !prev);
   // window.outerWidth : 브라우저 전체의 너비
-  //window.outerHeight : 브라우저 전체의 높이
   //window.innerWidth : 브라우저 화면의 너비
-  //window.innerHeight : 브라우저 화면의 높이
   const slideVars = {
     hidden: {
-      x: window.outerWidth
+      x: window.outerWidth,
     },
     visible: {
       x: 0,
     },
     exit: {
-      x: -window.outerWidth
+      x: -window.outerWidth,
     },
   };
+
+  const offset = 6;
 
   // <></> : fragment 많은 요소를 공통된 부모없이 연이어서 리턴하는법
   return (
@@ -106,7 +123,9 @@ function Home() {
             <OverView>{data?.results[0].overview}</OverView>
           </MainBanner>
           <Slider>
-            <AnimatePresence>
+            {/* onExitComplete : exit이 끝났을 때 실행 */}
+            {/* initial={false} : 컴포넌트가 처음 Mount될 때 오른쪽에서 들어오지X */}
+            <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
               <Row
                 variants={slideVars}
                 initial="hidden"
@@ -115,9 +134,15 @@ function Home() {
                 transition={{ type: "tween", duration: 0.5, delay: 0.3 }}
                 key={index}
               >
-                {[1, 2, 3, 4, 5, 6].map((i) => (
-                  <Box key={i}>{i}</Box>
-                ))}
+                {data?.results
+                  .slice(1)
+                  .slice(offset * index, offset * index + offset)
+                  .map((movie) => (
+                    <Box
+                      key={movie.id}
+                      bgPhoto={makeImagePath(movie.backdrop_path)}
+                    />
+                  ))}
               </Row>
             </AnimatePresence>
           </Slider>

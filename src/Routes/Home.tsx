@@ -106,6 +106,20 @@ function Home() {
     },
   };
 
+  const videoVars = {
+    start: {
+      scale: 1,
+    },
+    hover: {
+      scale: 1.5,
+      y: -50,
+      transition: {
+        delay: 0.5,
+        type: "tween",
+      },
+    },
+  };
+
   const offset = 6;
 
   // <></> : fragment 많은 요소를 공통된 부모없이 연이어서 리턴하는법
@@ -139,6 +153,10 @@ function Home() {
                   .slice(offset * index, offset * index + offset)
                   .map((movie) => (
                     <Box
+                      variants={videoVars}
+                      initial="start"
+                      whileHover="hover"
+                      transition={{ type: "tween" }}
                       key={movie.id}
                       bgPhoto={makeImagePath(movie.backdrop_path)}
                     />

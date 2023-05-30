@@ -2,9 +2,11 @@ import { useQuery } from "react-query";
 import { getMovies, IMovieProps } from "./api";
 import styled from "styled-components";
 import { makeImagePath } from "../utilities";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
 
 const Wrapper = styled.div`
-height: 200vh;
+  height: 100vh;
   background-color: black;
 `;
 const Loader = styled.div`
@@ -41,13 +43,114 @@ const OverView = styled.p`
   word-break: keep-all;
 `;
 
+const Slider = styled.div`
+  position: relative;
+`;
+
+const Row = styled(motion.div)`
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(6, 1fr);
+  position: absolute;
+  width: 100%;
+`;
+
+const Box = styled(motion.div)<{ bgPhoto: string }>`
+  background: green;
+  height: 200px;
+  font-size: 30px;
+  background-image: url(${(props) => props.bgPhoto});
+  background-size: cover;
+  background-position: center center;
+  &:first-child {
+    transform-origin: center left;
+  }
+
+  &:last-child {
+    transform-origin: center right;
+  }
+`;
+
+const Info = styled(motion.div)`
+  width: 100%;
+  opacity: 0;
+  padding: 10px;
+  background-color: ${(prop) => prop.theme.black.lighter};
+  position: absolute;
+  bottom: 0;
+  white-space: nowrap;
+  h4 {
+    font-size: 15px;
+    color: ${(props) => props.theme.white.darker};
+    text-align: center;
+  }
+`;
+
 function Home() {
   const { isLoading, data } = useQuery<IMovieProps>(
-    // movies라는 데이터 이름의 nowPlaying이라는 식별자를 가진 데이터를 가져오고, 이를 캐싱하여 재사용
     // 현재 상영 중인(now playing) 영화에 대한 데이터임을 구분하기 위한 식별자
     ["movies", "nowPlaying"],
     getMovies
   );
+
+  const [index, setIndex] = useState(0);
+  const [leaving, setLeaving] = useState(false);
+  const slideBtn = () => {
+    // if문으로 감싸주지 않으면 data가 number || undefined이기 때문
+    if (data) {
+      if (leaving) return;
+      toggleLeaving();
+
+      // 메인 배너 영화 1개를 썼기 때문에 -1
+      const totalMovie = data.results.length - 1;
+
+      // ceil : 올림처리
+      // page가 0에서 시작하기 때문에 -1
+      const maxIndex = Math.floor(totalMovie / offset) - 1;
+      setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
+    }
+  };
+
+  const toggleLeaving = () => setLeaving((prev) => !prev);
+  // window.outerWidth : 브라우저 전체의 너비
+  //window.innerWidth : 브라우저 화면의 너비
+  const slideVars = {
+    hidden: {
+      x: window.outerWidth,
+    },
+    visible: {
+      x: 0,
+    },
+    exit: {
+      x: -window.outerWidth,
+    },
+  };
+
+  const videoVars = {
+    start: {
+      scale: 1,
+    },
+    hover: {
+      scale: 1.3,
+      y: -50,
+      transition: {
+        delay: 0.3,
+        type: "tween",
+      },
+    },
+  };
+
+  const infoVars = {
+    hover: {
+      opacity: 1,
+      transition: {
+        delay: 0.5,
+        type: "tween",
+      },
+    },
+  };
+
+  const offset = 6;
 
   // <></> : fragment 많은 요소를 공통된 부모없이 연이어서 리턴하는법
   return (
@@ -57,11 +160,47 @@ function Home() {
       ) : (
         <>
           <MainBanner
+            onClick={slideBtn}
             bgPhoto={makeImagePath(data?.results[0].backdrop_path || "")}
           >
             <Title>{data?.results[0].title}</Title>
             <OverView>{data?.results[0].overview}</OverView>
           </MainBanner>
+          <Slider>
+            {/* onExitComplete : exit이 끝났을 때 실행 */}
+            {/* initial={false} : 컴포넌트가 처음 Mount될 때 오른쪽에서 들어오지X */}
+            <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
+              <Row
+                variants={slideVars}
+                initial="hidden"
+                animate="visibel"
+                exit="exit"
+                transition={{ type: "tween", duration: 0.5, delay: 0.3 }}
+                key={index}
+              >
+                {data?.results
+                  .slice(1)
+                  .slice(offset * index, offset * index + offset)
+                  .map((movie) => (
+                    <Box
+                      // 베리언트는 자식 컴포넌트에도 상속된다
+                      variants={videoVars}
+                      initial="start"
+                      whileHover="hover"
+                      transition={{ type: "tween" }}
+                      key={movie.id}
+                      bgPhoto={makeImagePath(
+                        movie.backdrop_path || movie.poster_path
+                      )}
+                    >
+                      <Info variants={infoVars}>
+                        <h4>{movie.title}</h4>
+                      </Info>
+                    </Box>
+                  ))}
+              </Row>
+            </AnimatePresence>
+          </Slider>
         </>
       )}
     </Wrapper>

@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { makeImagePath } from "../utilities";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -87,6 +88,10 @@ const Info = styled(motion.div)`
 `;
 
 function Home() {
+
+  // useNavigate : 컴포넌트 내에서 라우팅을 조작
+  // 
+  const navigate = useNavigate();
   const { isLoading, data } = useQuery<IMovieProps>(
     // 현재 상영 중인(now playing) 영화에 대한 데이터임을 구분하기 위한 식별자
     ["movies", "nowPlaying"],
@@ -112,6 +117,10 @@ function Home() {
   };
 
   const toggleLeaving = () => setLeaving((prev) => !prev);
+  const onBoxClicked = (movieId: number) => {
+    navigate(`/movies/${movieId}`);
+  };
+
   // window.outerWidth : 브라우저 전체의 너비
   //window.innerWidth : 브라우저 화면의 너비
   const slideVars = {
@@ -184,6 +193,7 @@ function Home() {
                   .map((movie) => (
                     <Box
                       // 베리언트는 자식 컴포넌트에도 상속된다
+                      onClick={() => onBoxClicked(movie.id)}
                       variants={videoVars}
                       initial="start"
                       whileHover="hover"

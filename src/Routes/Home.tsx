@@ -96,7 +96,8 @@ function Home() {
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
   const slideBtn = () => {
-    // if문으로 감싸주지 않으면 data가 number || undefined이기 때문
+    
+    // if문으로 감싸주지 않으면 data가 number || undefined이기에
     if (data) {
       if (leaving) return;
       toggleLeaving();

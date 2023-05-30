@@ -58,8 +58,6 @@ const Row = styled(motion.div)`
 const Box = styled(motion.div)<{ bgPhoto: string }>`
   background: green;
   height: 200px;
-  line-height: 200px;
-  text-align: center;
   font-size: 30px;
   background-image: url(${(props) => props.bgPhoto});
   background-size: cover;
@@ -70,6 +68,21 @@ const Box = styled(motion.div)<{ bgPhoto: string }>`
 
   &:last-child {
     transform-origin: center right;
+  }
+`;
+
+const Info = styled(motion.div)`
+  width: 100%;
+  opacity: 0;
+  padding: 10px;
+  background-color: ${(prop) => prop.theme.black.lighter};
+  position: absolute;
+  bottom: 0;
+  white-space: nowrap;
+  h4 {
+    font-size: 15px;
+    color: ${(props) => props.theme.white.darker};
+    text-align: center;
   }
 `;
 
@@ -121,6 +134,16 @@ function Home() {
       scale: 1.3,
       y: -50,
       transition: {
+        delay: 0.3,
+        type: "tween",
+      },
+    },
+  };
+
+  const infoVars = {
+    hover: {
+      opacity: 1,
+      transition: {
         delay: 0.5,
         type: "tween",
       },
@@ -160,13 +183,20 @@ function Home() {
                   .slice(offset * index, offset * index + offset)
                   .map((movie) => (
                     <Box
+                      // 베리언트는 자식 컴포넌트에도 상속된다
                       variants={videoVars}
                       initial="start"
                       whileHover="hover"
                       transition={{ type: "tween" }}
                       key={movie.id}
-                      bgPhoto={makeImagePath(movie.backdrop_path)}
-                    />
+                      bgPhoto={makeImagePath(
+                        movie.backdrop_path || movie.poster_path
+                      )}
+                    >
+                      <Info variants={infoVars}>
+                        <h4>{movie.title}</h4>
+                      </Info>
+                    </Box>
                   ))}
               </Row>
             </AnimatePresence>

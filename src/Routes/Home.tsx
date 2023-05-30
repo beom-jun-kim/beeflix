@@ -152,7 +152,7 @@ function Home() {
 
   const offset = 6;
 
-  // <></> : fragment 많은 요소를 공통된 부모없이 연이어서 리턴하는법
+  // <></> : fragment 많은 요소를 공통된 부모없이 연이어서 리턴
   return (
     <Wrapper>
       {isLoading ? (

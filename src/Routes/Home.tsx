@@ -2,8 +2,9 @@ import { useQuery } from "react-query";
 import { getMovies, IMovieProps } from "./api";
 import styled from "styled-components";
 import { makeImagePath } from "../utilities";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll } from "framer-motion";
 import { useState } from "react";
+import { useMatch, useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -86,7 +87,31 @@ const Info = styled(motion.div)`
   }
 `;
 
+const Overlay = styled(motion.div)`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+`;
+
+const DetailMovie = styled(motion.div)`
+  position: absolute;
+  width: 600px;
+  height: 100vh;
+  background: red;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+`;
+
 function Home() {
+  // useNavigate : 컴포넌트 내에서 라우팅을 조작
+  const navigate = useNavigate();
+  const matchModalBox = useMatch("movies/:movieId");
+  const { scrollY } = useScroll();
   const { isLoading, data } = useQuery<IMovieProps>(
     // 현재 상영 중인(now playing) 영화에 대한 데이터임을 구분하기 위한 식별자
     ["movies", "nowPlaying"],
@@ -112,6 +137,12 @@ function Home() {
   };
 
   const toggleLeaving = () => setLeaving((prev) => !prev);
+  const onBoxClicked = (movieId: number) => {
+    navigate(`/movies/${movieId}`);
+  };
+
+  const overlayClicked = () => navigate("/");
+
   // window.outerWidth : 브라우저 전체의 너비
   //window.innerWidth : 브라우저 화면의 너비
   const slideVars = {
@@ -144,7 +175,7 @@ function Home() {
     hover: {
       opacity: 1,
       transition: {
-        delay: 0.5,
+        delay: 0.3,
         type: "tween",
       },
     },
@@ -184,6 +215,8 @@ function Home() {
                   .map((movie) => (
                     <Box
                       // 베리언트는 자식 컴포넌트에도 상속된다
+                      layoutId={movie.id + ""}
+                      onClick={() => onBoxClicked(movie.id)}
                       variants={videoVars}
                       initial="start"
                       whileHover="hover"
@@ -201,6 +234,23 @@ function Home() {
               </Row>
             </AnimatePresence>
           </Slider>
+          <AnimatePresence>
+            {matchModalBox ? (
+              <>
+                <Overlay
+                  onClick={overlayClicked}
+                  exit={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                />
+                <DetailMovie
+                  layoutId={matchModalBox.params.movieId}
+                  style={{
+                    top: scrollY.get() + 30,
+                  }}
+                />
+              </>
+            ) : null}
+          </AnimatePresence>
         </>
       )}
     </Wrapper>

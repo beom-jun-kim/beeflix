@@ -101,10 +101,20 @@ const DetailMovie = styled(motion.div)`
   position: absolute;
   width: 600px;
   height: 100vh;
-  background: red;
+  background-color: ${(props) => props.theme.black.lighter};
   left: 0;
   right: 0;
   margin: 0 auto;
+`;
+
+const DetailImg = styled.div`
+  height: 400px;
+  background-position: center;
+  background-size: cover;
+`;
+const DetailTitle = styled.h2`
+  color: ${(props) => props.theme.white.darker};
+  text-align: center;
 `;
 
 function Home() {
@@ -142,6 +152,12 @@ function Home() {
   };
 
   const overlayClicked = () => navigate("/");
+  const clickedMovie =
+    matchModalBox?.params.movieId &&
+    // Array.prototype.find() : 조건을 만족하는 첫번째 요소의 값을 반환
+    data?.results.find(
+      (movie) => movie.id + "" === matchModalBox.params.movieId
+    );
 
   // window.outerWidth : 브라우저 전체의 너비
   //window.innerWidth : 브라우저 화면의 너비
@@ -247,7 +263,20 @@ function Home() {
                   style={{
                     top: scrollY.get() + 30,
                   }}
-                />
+                >
+                  {clickedMovie && (
+                    <>
+                      <DetailImg
+                        style={{
+                          backgroundImage: `linear-gradient(to top,black,transparent), url(${makeImagePath(
+                            clickedMovie.backdrop_path
+                          )})`,
+                        }}
+                      />
+                      <DetailTitle>{clickedMovie.title}</DetailTitle>
+                    </>
+                  )}
+                </DetailMovie>
               </>
             ) : null}
           </AnimatePresence>

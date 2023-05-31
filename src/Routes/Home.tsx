@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useMatch, useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
-  height: 100vh;
+  /* height: 100vh; */
   background-color: black;
 `;
 const Loader = styled.div`
@@ -57,7 +57,6 @@ const Row = styled(motion.div)`
 `;
 
 const Box = styled(motion.div)<{ bgPhoto: string }>`
-  background: green;
   height: 200px;
   font-size: 30px;
   background-image: url(${(props) => props.bgPhoto});
@@ -122,7 +121,7 @@ function Home() {
   const navigate = useNavigate();
   const matchModalBox = useMatch("movies/:movieId");
   const { scrollY } = useScroll();
-  const { isLoading, data } = useQuery<IMovieProps>(
+  const { data, isLoading } = useQuery<IMovieProps>(
     // 현재 상영 중인(now playing) 영화에 대한 데이터임을 구분하기 위한 식별자
     ["movies", "nowPlaying"],
     getMovies
@@ -137,11 +136,11 @@ function Home() {
       toggleLeaving();
 
       // 메인 배너 영화 1개를 썼기 때문에 -1
-      const totalMovie = data.results.length - 1;
+      const totalMovies = data.results.length - 1;
 
       // ceil : 올림처리
       // page가 0에서 시작하기 때문에 -1
-      const maxIndex = Math.floor(totalMovie / offset) - 1;
+      const maxIndex = Math.floor(totalMovies / offset) - 1;
       setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
     }
   };
@@ -220,7 +219,7 @@ function Home() {
               <Row
                 variants={slideVars}
                 initial="hidden"
-                animate="visibel"
+                animate="visible"
                 exit="exit"
                 transition={{ type: "tween", duration: 0.5, delay: 0.3 }}
                 key={index}

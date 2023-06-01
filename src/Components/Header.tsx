@@ -5,8 +5,9 @@ import {
   useScroll,
   useMotionValueEvent,
 } from "framer-motion";
-import { Link, useMatch } from "react-router-dom";
+import { Link, useMatch, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 const Nav = styled(motion.nav)`
   display: flex;
@@ -66,7 +67,7 @@ const Circle = styled(motion.span)`
   margin: 0 auto;
 `;
 
-const Search = styled.span`
+const Search = styled.form`
   cursor: pointer;
   position: relative;
   color: white;
@@ -86,9 +87,9 @@ const Input = styled(motion.input)`
   left: -180px;
   padding-left: 35px;
   background-color: black;
-  color: ${(prop) => prop.theme.white.lighter};
+  color: ${(props) => props.theme.white.darker};
   outline: none;
-  border: 1px solid;
+  border: 1px solid ${(props) => props.theme.white.darker};
 `;
 
 const logoVars = {
@@ -104,6 +105,10 @@ const logoVars = {
   initial: {},
 };
 
+interface IForm {
+  keyword: string;
+}
+
 function Header() {
   const [searchOpen, setSearchOpen] = useState(false);
 
@@ -114,6 +119,13 @@ function Header() {
   // useAnimation : animation 컨트롤러를 만들 수 있다
   const inputAnimation = useAnimation();
   const navAnimation = useAnimation();
+
+  // form
+  const { register, handleSubmit, setValue } = useForm<IForm>();
+  const navigate = useNavigate();
+  const onValid = (data: IForm) => {
+    navigate(`/search?keyword=${data.keyword}`);
+  };
 
   // 검색 버튼
   const searchIconClick = () => {
@@ -179,7 +191,7 @@ function Header() {
         </Items>
       </Col>
       <Col>
-        <Search>
+        <Search onSubmit={handleSubmit(onValid)}>
           <motion.svg
             onClick={searchIconClick}
             animate={{ x: searchOpen ? -175 : 0 }}
@@ -195,6 +207,7 @@ function Header() {
             ></path>
           </motion.svg>
           <Input
+            {...register("keyword", { required: true, minLength: 1 })}
             animate={inputAnimation}
             initial={{ scaleX: 0, background: "rgba(0, 0, 0, 0)" }}
             transition={{ ease: "linear" }}

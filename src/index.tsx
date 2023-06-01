@@ -31,16 +31,14 @@ const GlobalStyle = createGlobalStyle`
     font: inherit;
     vertical-align: baseline;
   }
-
   html {
-    overflow-x: hidden;
+    overflow-x:hidden;
   }
-  /* HTML5 display-role reset for older browsers */
   article, aside, details, figcaption, figure,
   footer, header, hgroup, main, menu, nav, section {
     display: block;
   }
-  /* HTML5 hidden-attribute fix for newer browsers */
+  
   *[hidden] {
       display: none;
   }

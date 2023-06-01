@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useMatch, useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
-  height: 100vh;
+  /* height: 100vh; */
   background-color: black;
 `;
 const Loader = styled.div`
@@ -57,7 +57,6 @@ const Row = styled(motion.div)`
 `;
 
 const Box = styled(motion.div)<{ bgPhoto: string }>`
-  background: green;
   height: 200px;
   font-size: 30px;
   background-image: url(${(props) => props.bgPhoto});
@@ -101,10 +100,20 @@ const DetailMovie = styled(motion.div)`
   position: absolute;
   width: 600px;
   height: 100vh;
-  background: red;
+  background-color: ${(props) => props.theme.black.lighter};
   left: 0;
   right: 0;
   margin: 0 auto;
+`;
+
+const DetailImg = styled.div`
+  height: 400px;
+  background-position: center;
+  background-size: cover;
+`;
+const DetailTitle = styled.h2`
+  color: ${(props) => props.theme.white.darker};
+  text-align: center;
 `;
 
 function Home() {
@@ -112,7 +121,7 @@ function Home() {
   const navigate = useNavigate();
   const matchModalBox = useMatch("movies/:movieId");
   const { scrollY } = useScroll();
-  const { isLoading, data } = useQuery<IMovieProps>(
+  const { data, isLoading } = useQuery<IMovieProps>(
     // 현재 상영 중인(now playing) 영화에 대한 데이터임을 구분하기 위한 식별자
     ["movies", "nowPlaying"],
     getMovies
@@ -127,11 +136,11 @@ function Home() {
       toggleLeaving();
 
       // 메인 배너 영화 1개를 썼기 때문에 -1
-      const totalMovie = data.results.length - 1;
+      const totalMovies = data.results.length - 1;
 
       // ceil : 올림처리
       // page가 0에서 시작하기 때문에 -1
-      const maxIndex = Math.floor(totalMovie / offset) - 1;
+      const maxIndex = Math.floor(totalMovies / offset) - 1;
       setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
     }
   };
@@ -142,6 +151,12 @@ function Home() {
   };
 
   const overlayClicked = () => navigate("/");
+  const clickedMovie =
+    matchModalBox?.params.movieId &&
+    // Array.prototype.find() : 조건을 만족하는 첫번째 요소의 값을 반환
+    data?.results.find(
+      (movie) => movie.id + "" === matchModalBox.params.movieId
+    );
 
   // window.outerWidth : 브라우저 전체의 너비
   //window.innerWidth : 브라우저 화면의 너비
@@ -204,7 +219,7 @@ function Home() {
               <Row
                 variants={slideVars}
                 initial="hidden"
-                animate="visibel"
+                animate="visible"
                 exit="exit"
                 transition={{ type: "tween", duration: 0.5, delay: 0.3 }}
                 key={index}
@@ -247,7 +262,20 @@ function Home() {
                   style={{
                     top: scrollY.get() + 30,
                   }}
-                />
+                >
+                  {clickedMovie && (
+                    <>
+                      <DetailImg
+                        style={{
+                          backgroundImage: `linear-gradient(to top,black,transparent), url(${makeImagePath(
+                            clickedMovie.backdrop_path
+                          )})`,
+                        }}
+                      />
+                      <DetailTitle>{clickedMovie.title}</DetailTitle>
+                    </>
+                  )}
+                </DetailMovie>
               </>
             ) : null}
           </AnimatePresence>

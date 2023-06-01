@@ -44,8 +44,8 @@
   },
   "devDependencies": {
     "@types/styled-components": "^5.1.26",
-    "framer-motion": "^10.12.12",
-    "react-hook-form": "^7.43.9",
+    "framer-motion": "^10.12.16",
+    "react-hook-form": "^7.44.2",
     "react-query": "^3.39.3",
     "styled-components": "^6.0.0-rc.1"
   }

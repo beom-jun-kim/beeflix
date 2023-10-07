@@ -6,6 +6,10 @@ import { motion, AnimatePresence, useScroll } from "framer-motion";
 import { useState } from "react";
 import { useMatch, useNavigate } from "react-router-dom";
 
+interface StylesProps {
+  prop: any;
+}
+
 const Wrapper = styled.div`
   /* height: 100vh; */
   background-color: black;
@@ -29,13 +33,13 @@ const MainBanner = styled.div<{ bgPhoto: string }>`
 `;
 
 const Title = styled.h2`
-  font-size: ${(props) => props.theme.fontSize.bigFont};
+  font-size: ${(prop) => prop.theme.fontSize.bigFont};
   margin-bottom: 20px;
   color: ${(prop) => prop.theme.white.lighter};
 `;
 
 const OverView = styled.p`
-  font-size: ${(props) => props.theme.fontSize.nomalFont};
+  font-size: ${(prop) => prop.theme.fontSize.nomalFont};
   width: 45%;
   height: 80px;
   line-height: 28px;
@@ -59,7 +63,7 @@ const Row = styled(motion.div)`
 const Box = styled(motion.div)<{ bgPhoto: string }>`
   height: 200px;
   font-size: 30px;
-  background-image: url(${(props) => props.bgPhoto});
+  background-image: url(${(prop) => prop.bgPhoto});
   background-size: cover;
   background-position: center center;
   &:first-child {
@@ -81,7 +85,7 @@ const Info = styled(motion.div)`
   white-space: nowrap;
   h4 {
     font-size: 15px;
-    color: ${(props) => props.theme.white.darker};
+    color: ${(prop) => prop.theme.white.darker};
     text-align: center;
   }
 `;
@@ -100,7 +104,7 @@ const DetailMovie = styled(motion.div)`
   position: absolute;
   width: 600px;
   height: 100vh;
-  background-color: ${(props) => props.theme.black.lighter};
+  background-color: ${(prop) => prop.theme.black.lighter};
   left: 0;
   right: 0;
   margin: 0 auto;
@@ -112,17 +116,17 @@ const DetailImg = styled.div`
   background-size: cover;
 `;
 const DetailTitle = styled.h2`
-  color: ${(props) => props.theme.white.darker};
+  color: ${(prop) => prop.theme.white.darker};
   text-align: center;
 `;
 
+const InfoTitle = styled.h4``;
+
 function Home() {
-  // useNavigate : 컴포넌트 내에서 라우팅을 조작
   const navigate = useNavigate();
   const matchModalBox = useMatch("movies/:movieId");
   const { scrollY } = useScroll();
   const { data, isLoading } = useQuery<IMovieProps>(
-    // 현재 상영 중인(now playing) 영화에 대한 데이터임을 구분하기 위한 식별자
     ["movies", "nowPlaying"],
     getMovies
   );
@@ -130,16 +134,10 @@ function Home() {
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
   const slideBtn = () => {
-    // if문으로 감싸주지 않으면 data가 number || undefined이기 때문
     if (data) {
       if (leaving) return;
       toggleLeaving();
-
-      // 메인 배너 영화 1개를 썼기 때문에 -1
       const totalMovies = data.results.length - 1;
-
-      // ceil : 올림처리
-      // page가 0에서 시작하기 때문에 -1
       const maxIndex = Math.floor(totalMovies / offset) - 1;
       setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
     }
@@ -151,12 +149,7 @@ function Home() {
   };
 
   const overlayClicked = () => navigate("/");
-  const clickedMovie =
-    matchModalBox?.params.movieId &&
-    // Array.prototype.find() : 조건을 만족하는 첫번째 요소의 값을 반환
-    data?.results.find(
-      (movie) => movie.id + "" === matchModalBox.params.movieId
-    );
+  const clickedMovie = matchModalBox?.params.movieId && data?.results.find( (movie) => movie.id + "" === matchModalBox.params.movieId);
 
   // window.outerWidth : 브라우저 전체의 너비
   //window.innerWidth : 브라우저 화면의 너비
@@ -243,14 +236,14 @@ function Home() {
                       )}
                     >
                       <Info variants={infoVars}>
-                        <h4>{movie.title}</h4>
+                        <InfoTitle>{movie.title}</InfoTitle>
                       </Info>
                     </Box>
                   ))}
               </Row>
             </AnimatePresence>
           </Slider>
-          
+
           <AnimatePresence>
             {matchModalBox ? (
               <>

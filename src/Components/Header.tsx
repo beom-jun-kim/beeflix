@@ -114,7 +114,7 @@ function Header() {
 
   // 현재 위치 확인
   const homeMatch = useMatch("/");
-  const tvMatch = useMatch("/tv");
+  const tvMatch = useMatch("tv");
 
   // useAnimation : animation 컨트롤러를 만들 수 있다
   const inputAnimation = useAnimation();

@@ -20,7 +20,7 @@ export interface IMovieProps {
   total_results: number;
 }
 
-export async function getMovies() {
+export const getMovies = async() => {
   return await (
     await fetch(`${BASE_URL}/movie/now_playing?api_key=${API_KEY}&language=ko`)
   ).json();

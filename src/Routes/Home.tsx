@@ -212,6 +212,7 @@ function Home() {
             <Title>{data?.results[0].title}</Title>
             <OverView>{data?.results[0].overview}</OverView>
           </MainBanner>
+
           <Slider>
             {/* onExitComplete : exit이 끝났을 때 실행 */}
             {/* initial={false} : 컴포넌트가 처음 Mount될 때 오른쪽에서 들어오지X */}
@@ -249,6 +250,7 @@ function Home() {
               </Row>
             </AnimatePresence>
           </Slider>
+          
           <AnimatePresence>
             {matchModalBox ? (
               <>

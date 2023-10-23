@@ -6,10 +6,6 @@ import { motion, AnimatePresence, useScroll } from "framer-motion";
 import { useState } from "react";
 import { useMatch, useNavigate } from "react-router-dom";
 
-interface StylesProps {
-  prop: any;
-}
-
 const Wrapper = styled.div`
   /* height: 100vh; */
   background-color: black;

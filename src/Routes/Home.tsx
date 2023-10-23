@@ -10,6 +10,7 @@ import { makeImagePath } from "../utilities";
 import { motion, AnimatePresence, useScroll } from "framer-motion";
 import { useState } from "react";
 import { useMatch, useNavigate } from "react-router-dom";
+import styles from "../Routes/Home.module.css";
 
 const Wrapper = styled.div`
   background-color: black;
@@ -56,7 +57,7 @@ const Row = styled(motion.div)`
   display: grid;
   gap: 10px;
   grid-template-columns: repeat(6, 1fr);
-  position: absolute;
+  position:absolute;
   width: 100%;
 `;
 
@@ -121,6 +122,13 @@ const DetailTitle = styled.h2`
 `;
 
 const InfoTitle = styled.h4``;
+
+const NextBtn = styled.button`
+  width: 30px;
+  height: 30px;
+  background: white;
+  cursor: pointer;
+`;
 
 function Home() {
   const navigate = useNavigate();
@@ -213,9 +221,8 @@ function Home() {
             <OverView>{nowPlayingMoviesData?.results[0].overview}</OverView>
           </MainBanner>
 
+          {/* now playing */}
           <Slider>
-            {/* onExitComplete : exit이 끝났을 때 실행 */}
-            {/* initial={false} : 컴포넌트가 처음 Mount될 때 오른쪽에서 들어오지X */}
             <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
               <Row
                 variants={slideVars}
@@ -230,7 +237,6 @@ function Home() {
                   .slice(offset * index, offset * index + offset)
                   .map((movie) => (
                     <Box
-                      // 베리언트는 자식 컴포넌트에도 상속된다
                       layoutId={movie.id + ""}
                       onClick={() => onBoxClicked(movie.id)}
                       variants={videoVars}
@@ -251,21 +257,37 @@ function Home() {
             </AnimatePresence>
           </Slider>
 
-          <Slider>
-            <Row>
-              {popularMoviesData?.results.map((movie) => (
-                <Box
-                  key={movie.id}
-                  bgPhoto={makeImagePath(
-                    movie.backdrop_path || movie.poster_path
-                  )}
-                >
-                  <Info variants={infoVars}>
-                    <InfoTitle>{movie.title}</InfoTitle>
-                  </Info>
-                </Box>
-              ))}
-            </Row>
+          {/* popular */}
+          <Slider className={styles.slider__box}>
+            <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
+              <Row
+                variants={slideVars}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                transition={{ type: "tween", duration: 0.5, delay: 0.3 }}
+                key={index}
+              >
+                {popularMoviesData?.results.map((movie) => (
+                  <Box
+                    layoutId={movie.id + ""}
+                    onClick={() => onBoxClicked(movie.id)}
+                    variants={videoVars}
+                    initial="start"
+                    whileHover="hover"
+                    transition={{ type: "tween" }}
+                    key={movie.id}
+                    bgPhoto={makeImagePath(
+                      movie.backdrop_path || movie.poster_path
+                    )}
+                  >
+                    <Info variants={infoVars}>
+                      <InfoTitle>{movie.title}</InfoTitle>
+                    </Info>
+                  </Box>
+                ))}
+              </Row>
+            </AnimatePresence>
           </Slider>
 
           <AnimatePresence>

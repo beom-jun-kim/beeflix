@@ -1,5 +1,10 @@
 import { useQuery } from "react-query";
-import { getMovies, IMovieProps } from "./api";
+import {
+  getMovies,
+  INowPlayingMovieProps,
+  IMovieList,
+  popularMovies,
+} from "./api";
 import styled from "styled-components";
 import { makeImagePath } from "../utilities";
 import { motion, AnimatePresence, useScroll } from "framer-motion";
@@ -7,7 +12,6 @@ import { useState } from "react";
 import { useMatch, useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
-  /* height: 100vh; */
   background-color: black;
 `;
 const Loader = styled.div`
@@ -122,18 +126,19 @@ function Home() {
   const navigate = useNavigate();
   const matchModalBox = useMatch("movies/:movieId");
   const { scrollY } = useScroll();
-  const { data, isLoading } = useQuery<IMovieProps>(
-    ["movies", "nowPlaying"],
-    getMovies
-  );
+  const { data: nowPlayingMoviesData, isLoading: nowPlayingMoviesLoading } =
+    useQuery<INowPlayingMovieProps>(["movies", "nowPlaying"], getMovies);
+
+  const { data: popularMoviesData, isLoading: popularMoviesLoading } =
+    useQuery<IMovieList>(["movies", "popular"], popularMovies);
 
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
   const slideBtn = () => {
-    if (data) {
+    if (nowPlayingMoviesData) {
       if (leaving) return;
       toggleLeaving();
-      const totalMovies = data.results.length - 1;
+      const totalMovies = nowPlayingMoviesData.results.length - 1;
       const maxIndex = Math.floor(totalMovies / offset) - 1;
       setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
     }
@@ -145,7 +150,11 @@ function Home() {
   };
 
   const overlayClicked = () => navigate("/");
-  const clickedMovie = matchModalBox?.params.movieId && data?.results.find( (movie) => movie.id + "" === matchModalBox.params.movieId);
+  const clickedMovie =
+    matchModalBox?.params.movieId &&
+    nowPlayingMoviesData?.results.find(
+      (movie) => movie.id + "" === matchModalBox.params.movieId
+    );
 
   // window.outerWidth : 브라우저 전체의 너비
   //window.innerWidth : 브라우저 화면의 너비
@@ -190,16 +199,18 @@ function Home() {
   // <></> : fragment 많은 요소를 공통된 부모없이 연이어서 리턴하는법
   return (
     <Wrapper>
-      {isLoading ? (
+      {nowPlayingMoviesLoading ? (
         <Loader>Loading...</Loader>
       ) : (
         <>
           <MainBanner
             onClick={slideBtn}
-            bgPhoto={makeImagePath(data?.results[0].backdrop_path || "")}
+            bgPhoto={makeImagePath(
+              nowPlayingMoviesData?.results[0].backdrop_path || ""
+            )}
           >
-            <Title>{data?.results[0].title}</Title>
-            <OverView>{data?.results[0].overview}</OverView>
+            <Title>{nowPlayingMoviesData?.results[0].title}</Title>
+            <OverView>{nowPlayingMoviesData?.results[0].overview}</OverView>
           </MainBanner>
 
           <Slider>
@@ -214,7 +225,7 @@ function Home() {
                 transition={{ type: "tween", duration: 0.5, delay: 0.3 }}
                 key={index}
               >
-                {data?.results
+                {nowPlayingMoviesData?.results
                   .slice(1)
                   .slice(offset * index, offset * index + offset)
                   .map((movie) => (
@@ -238,6 +249,23 @@ function Home() {
                   ))}
               </Row>
             </AnimatePresence>
+          </Slider>
+
+          <Slider>
+            <Row>
+              {popularMoviesData?.results.map((movie) => (
+                <Box
+                  key={movie.id}
+                  bgPhoto={makeImagePath(
+                    movie.backdrop_path || movie.poster_path
+                  )}
+                >
+                  <Info variants={infoVars}>
+                    <InfoTitle>{movie.title}</InfoTitle>
+                  </Info>
+                </Box>
+              ))}
+            </Row>
           </Slider>
 
           <AnimatePresence>

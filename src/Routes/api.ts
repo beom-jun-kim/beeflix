@@ -9,19 +9,29 @@ interface IMovieResults {
   backdrop_path: string;
 }
 
-export interface IMovieProps {
-  dates: {
-    maximum: string;
-    minimum: string;
-  };
-  page: number;
+export interface IMovieList {
   results: IMovieResults[];
+  page: number;
   total_pages: number;
   total_results: number;
 }
 
-export const getMovies = async() => {
+export interface INowPlayingMovieProps extends IMovieList {
+  dates: {
+    maximum: string;
+    minimum: string;
+  };
+}
+
+
+export const getMovies = async () => {
   return await (
     await fetch(`${BASE_URL}/movie/now_playing?api_key=${API_KEY}&language=ko`)
   ).json();
-}
+};
+
+export const popularMovies = async () => {
+  return await (
+    await fetch(`${BASE_URL}/movie/popular?api_key=${API_KEY}&language=ko`)
+  ).json();
+};

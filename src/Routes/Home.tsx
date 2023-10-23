@@ -57,7 +57,7 @@ const Row = styled(motion.div)`
   display: grid;
   gap: 10px;
   grid-template-columns: repeat(6, 1fr);
-  position:absolute;
+  position: absolute;
   width: 100%;
 `;
 
@@ -268,24 +268,27 @@ function Home() {
                 transition={{ type: "tween", duration: 0.5, delay: 0.3 }}
                 key={index}
               >
-                {popularMoviesData?.results.map((movie) => (
-                  <Box
-                    layoutId={movie.id + ""}
-                    onClick={() => onBoxClicked(movie.id)}
-                    variants={videoVars}
-                    initial="start"
-                    whileHover="hover"
-                    transition={{ type: "tween" }}
-                    key={movie.id}
-                    bgPhoto={makeImagePath(
-                      movie.backdrop_path || movie.poster_path
-                    )}
-                  >
-                    <Info variants={infoVars}>
-                      <InfoTitle>{movie.title}</InfoTitle>
-                    </Info>
-                  </Box>
-                ))}
+                {popularMoviesData?.results
+                  .slice(1)
+                  .slice(offset * index, offset * index + offset)
+                  .map((movie) => (
+                    <Box
+                      layoutId={movie.id + ""}
+                      onClick={() => onBoxClicked(movie.id)}
+                      variants={videoVars}
+                      initial="start"
+                      whileHover="hover"
+                      transition={{ type: "tween" }}
+                      key={movie.id}
+                      bgPhoto={makeImagePath(
+                        movie.backdrop_path || movie.poster_path
+                      )}
+                    >
+                      <Info variants={infoVars}>
+                        <InfoTitle>{movie.title}</InfoTitle>
+                      </Info>
+                    </Box>
+                  ))}
               </Row>
             </AnimatePresence>
           </Slider>

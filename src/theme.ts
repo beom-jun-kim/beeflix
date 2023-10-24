@@ -4,7 +4,7 @@ export const darkTheme: DefaultTheme = {
   red: "#E51013",
   black: {
     veryDark: "#141414",
-    darker: "#181818",
+    darker: "#000",
     lighter: "#2F2F2F",
   },
   white: {

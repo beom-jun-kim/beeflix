@@ -31,6 +31,7 @@ const MainBanner = styled.div<{ bgPhoto: string }>`
     url(${(prop) => prop.bgPhoto});
   background-size: cover;
   padding: 60px;
+  margin-bottom: 50px;
 `;
 
 const Title = styled.h2`
@@ -128,6 +129,15 @@ const NextBtn = styled.button`
   height: 30px;
   background: white;
   cursor: pointer;
+  position: absolute;
+  top: -50px;
+  right: 0;
+  z-index: 10;
+`;
+
+const PrevBtn = styled(NextBtn)`
+  right: 35px;
+  background: red;
 `;
 
 function Home() {
@@ -142,13 +152,23 @@ function Home() {
 
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
-  const slideBtn = () => {
+  const nextSlideBtn = () => {
     if (nowPlayingMoviesData) {
       if (leaving) return;
       toggleLeaving();
       const totalMovies = nowPlayingMoviesData.results.length - 1;
       const maxIndex = Math.floor(totalMovies / offset) - 1;
       setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
+    }
+  };
+
+  const prevSlideBtn = () => {
+    if (nowPlayingMoviesData) {
+      if (leaving) return;
+      toggleLeaving();
+      const totalMovies = nowPlayingMoviesData.results.length - 1;
+      const maxIndex = Math.floor(totalMovies / offset) - 1;
+      setIndex((prev) => (prev === 0 ? maxIndex : prev - 1));
     }
   };
 
@@ -167,14 +187,18 @@ function Home() {
   // window.outerWidth : 브라우저 전체의 너비
   //window.innerWidth : 브라우저 화면의 너비
   const slideVars = {
-    hidden: {
-      x: window.outerWidth,
+    hidden: (leaving: boolean) => {
+      return {
+        x: leaving ? -window.outerWidth : window.outerWidth,
+      };
     },
     visible: {
       x: 0,
     },
-    exit: {
-      x: -window.outerWidth,
+    exit: (leaving: boolean) => {
+      return {
+        x: leaving ? window.outerWidth : -window.outerWidth,
+      };
     },
   };
 
@@ -212,7 +236,6 @@ function Home() {
       ) : (
         <>
           <MainBanner
-            onClick={slideBtn}
             bgPhoto={makeImagePath(
               nowPlayingMoviesData?.results[0].backdrop_path || ""
             )}
@@ -223,9 +246,12 @@ function Home() {
 
           {/* now playing */}
           <Slider>
+            <NextBtn onClick={nextSlideBtn} />
+            <PrevBtn onClick={prevSlideBtn} />
             <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
               <Row
                 variants={slideVars}
+                custom={leaving}
                 initial="hidden"
                 animate="visible"
                 exit="exit"
@@ -257,7 +283,7 @@ function Home() {
             </AnimatePresence>
           </Slider>
 
-          {/* popular */}
+          {/* popular
           <Slider className={styles.slider__box}>
             <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
               <Row
@@ -291,7 +317,7 @@ function Home() {
                   ))}
               </Row>
             </AnimatePresence>
-          </Slider>
+          </Slider> */}
 
           <AnimatePresence>
             {matchModalBox ? (

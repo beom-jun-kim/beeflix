@@ -133,6 +133,8 @@ const NextBtn = styled.button`
   top: -50px;
   right: 0;
   z-index: 10;
+  outline: none;
+  border: none;
 `;
 
 const PrevBtn = styled(NextBtn)`
@@ -152,27 +154,29 @@ function Home() {
 
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
+  const [disabled, setDisabled] = useState(false);
+
   const nextSlideBtn = () => {
     if (nowPlayingMoviesData) {
-      if (leaving) return;
-      toggleLeaving();
+      setLeaving(true);
       const totalMovies = nowPlayingMoviesData.results.length - 1;
       const maxIndex = Math.floor(totalMovies / offset) - 1;
       setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
+      toggleDisabled();
     }
   };
 
   const prevSlideBtn = () => {
     if (nowPlayingMoviesData) {
-      if (leaving) return;
-      toggleLeaving();
+      setLeaving(false);
       const totalMovies = nowPlayingMoviesData.results.length - 1;
       const maxIndex = Math.floor(totalMovies / offset) - 1;
       setIndex((prev) => (prev === 0 ? maxIndex : prev - 1));
+      toggleDisabled();
     }
   };
 
-  const toggleLeaving = () => setLeaving((prev) => !prev);
+  const toggleDisabled = () => setDisabled((prev) => !prev);
   const onBoxClicked = (movieId: number) => {
     navigate(`/movies/${movieId}`);
   };
@@ -189,7 +193,7 @@ function Home() {
   const slideVars = {
     hidden: (leaving: boolean) => {
       return {
-        x: leaving ? -window.outerWidth : window.outerWidth,
+        x: leaving ? window.outerWidth : -window.outerWidth,
       };
     },
     visible: {
@@ -197,7 +201,7 @@ function Home() {
     },
     exit: (leaving: boolean) => {
       return {
-        x: leaving ? window.outerWidth : -window.outerWidth,
+        x: leaving ? -window.outerWidth : window.outerWidth,
       };
     },
   };
@@ -246,9 +250,13 @@ function Home() {
 
           {/* now playing */}
           <Slider>
-            <NextBtn onClick={nextSlideBtn} />
-            <PrevBtn onClick={prevSlideBtn} />
-            <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
+            <NextBtn onClick={nextSlideBtn} disabled={disabled} />
+            <PrevBtn onClick={prevSlideBtn} disabled={disabled} />
+            <AnimatePresence
+              initial={false}
+              onExitComplete={toggleDisabled}
+              custom={leaving}
+            >
               <Row
                 variants={slideVars}
                 custom={leaving}

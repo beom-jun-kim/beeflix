@@ -32,7 +32,7 @@ const GlobalStyle = createGlobalStyle`
     vertical-align: baseline;
   }
   html {
-    /* overflow-x:hidden; */
+    overflow-x:hidden;
   }
   article, aside, details, figcaption, figure,
   footer, header, hgroup, main, menu, nav, section {

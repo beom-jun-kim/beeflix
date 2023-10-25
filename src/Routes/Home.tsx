@@ -10,7 +10,7 @@ import { makeImagePath } from "../utilities";
 import { motion, AnimatePresence, useScroll } from "framer-motion";
 import { useState } from "react";
 import { useMatch, useNavigate } from "react-router-dom";
-import {FaAccusoft} from "react-icons/fa";
+import { FaAngleRight, FaAngleLeft } from "react-icons/fa";
 
 const Wrapper = styled.div`
   background-color: black;
@@ -30,7 +30,7 @@ const MainBanner = styled.div<{ bgPhoto: string }>`
   background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.9)),
     url(${(prop) => prop.bgPhoto});
   background-size: cover;
-  background-position:center;
+  background-position: center;
   padding: 60px;
   margin-bottom: 50px;
 `;
@@ -125,23 +125,24 @@ const DetailTitle = styled.h2`
 
 const InfoTitle = styled.h4``;
 
-const NextBtn = styled.button`
+const SliderBtn = styled.button`
   width: 30px;
   height: 30px;
-  background: white;
+  border: 3px solid white;
   cursor: pointer;
   position: absolute;
   top: -50px;
-  right: 0;
+  right: 10px;
   z-index: 10;
   outline: none;
-  border: none;
+  /* border: none; */
+  background:none;
 `;
 
-const PrevBtn = styled(NextBtn)`
-  right: 35px;
-  background: red;
-`;
+const PrevBtn = styled(SliderBtn)`
+  right:50px;
+`
+
 
 function Home() {
   const navigate = useNavigate();
@@ -236,7 +237,6 @@ function Home() {
   // <></> : fragment 많은 요소를 공통된 부모없이 연이어서 리턴하는법
   return (
     <Wrapper>
-      <FaAccusoft size="500" color="white"/>
       {nowPlayingMoviesLoading ? (
         <Loader>Loading...</Loader>
       ) : (
@@ -252,8 +252,12 @@ function Home() {
 
           {/* now playing */}
           <Slider>
-            <NextBtn onClick={nextSlideBtn} disabled={disabled} />
-            <PrevBtn onClick={prevSlideBtn} disabled={disabled} />
+            <SliderBtn onClick={nextSlideBtn} disabled={disabled}>
+              <FaAngleRight color="white" />
+            </SliderBtn>
+            <PrevBtn onClick={prevSlideBtn} disabled={disabled}>
+              <FaAngleLeft color="white" />
+            </PrevBtn>
             <AnimatePresence
               initial={false}
               onExitComplete={toggleDisabled}

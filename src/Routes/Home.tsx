@@ -10,7 +10,7 @@ import { makeImagePath } from "../utilities";
 import { motion, AnimatePresence, useScroll } from "framer-motion";
 import { useState } from "react";
 import { useMatch, useNavigate } from "react-router-dom";
-import styles from "../Routes/Home.module.css";
+import {FaAccusoft} from "react-icons/fa";
 
 const Wrapper = styled.div`
   background-color: black;
@@ -30,6 +30,7 @@ const MainBanner = styled.div<{ bgPhoto: string }>`
   background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.9)),
     url(${(prop) => prop.bgPhoto});
   background-size: cover;
+  background-position:center;
   padding: 60px;
   margin-bottom: 50px;
 `;
@@ -235,6 +236,7 @@ function Home() {
   // <></> : fragment 많은 요소를 공통된 부모없이 연이어서 리턴하는법
   return (
     <Wrapper>
+      <FaAccusoft size="500" color="white"/>
       {nowPlayingMoviesLoading ? (
         <Loader>Loading...</Loader>
       ) : (

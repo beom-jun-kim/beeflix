@@ -9,20 +9,17 @@ interface IMovieResults {
   backdrop_path: string;
 }
 
-export interface IMovieList {
+export interface IMoviesData {
   results: IMovieResults[];
   page: number;
   total_pages: number;
   total_results: number;
-}
 
-export interface INowPlayingMovieProps extends IMovieList {
-  dates: {
+  dates?: {
     maximum: string;
     minimum: string;
   };
 }
-
 
 export const getMovies = async () => {
   return await (

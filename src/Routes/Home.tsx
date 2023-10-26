@@ -27,12 +27,11 @@ const MainBanner = styled.div<{ bgPhoto: string }>`
   flex-direction: column;
   justify-content: center;
   height: 100vh;
-  background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.9)),
+  background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)),
     url(${(prop) => prop.bgPhoto});
   background-size: cover;
   background-position: center;
   padding: 60px;
-  margin-bottom: 50px;
 `;
 
 const Title = styled.h2`
@@ -48,19 +47,28 @@ const OverView = styled.p`
   line-height: 28px;
   color: ${(prop) => prop.theme.white.lighter};
   overflow: hidden;
-  word-break: keep-all;
+  position: relative;
+  &:after {
+    content: "...";
+    position: absolute;
+    font-size: ${(prop) => prop.theme.fontSize.nomalFont};
+    letter-spacing: 1px;
+  }
 `;
 
 const Slider = styled.div`
   position: relative;
+  &:nth-child(n+3) {
+    margin-top: 70px;
+  }
 `;
 
 const Row = styled(motion.div)`
   display: grid;
   gap: 10px;
   grid-template-columns: repeat(6, 1fr);
-  position: absolute;
-  width: 100%;
+  /* position: absolute; */
+  /* width: 100%; */
 `;
 
 const Box = styled(motion.div)<{ bgPhoto: string }>`
@@ -126,23 +134,38 @@ const DetailTitle = styled.h2`
 const InfoTitle = styled.h4``;
 
 const SliderBtn = styled.button`
-  width: 30px;
-  height: 30px;
+  width: 35px;
+  height: 35px;
   border: 3px solid white;
   cursor: pointer;
-  position: absolute;
-  top: -50px;
-  right: 10px;
-  z-index: 10;
   outline: none;
-  /* border: none; */
-  background:none;
+  background: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const PrevBtn = styled(SliderBtn)`
-  right:50px;
-`
+  right: 50px;
+  margin-right: 5px;
+`;
 
+const StateTitle = styled.h1`
+  color: ${(prop) => prop.theme.white.lighter};
+  font-weight: 400;
+  font-size: ${(prop) => prop.theme.fontSize.nomalFont};
+`;
+
+const SliderConent = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px 15px 30px;
+`;
+
+const ArrowBox = styled.div`
+  display: flex;
+`;
 
 function Home() {
   const navigate = useNavigate();
@@ -252,12 +275,18 @@ function Home() {
 
           {/* now playing */}
           <Slider>
-            <SliderBtn onClick={nextSlideBtn} disabled={disabled}>
-              <FaAngleRight color="white" />
-            </SliderBtn>
-            <PrevBtn onClick={prevSlideBtn} disabled={disabled}>
-              <FaAngleLeft color="white" />
-            </PrevBtn>
+            <SliderConent>
+              <StateTitle>떴다! 넷플릭스 신작</StateTitle>
+              <ArrowBox>
+                <PrevBtn onClick={prevSlideBtn} disabled={disabled}>
+                  <FaAngleLeft color="white" />
+                </PrevBtn>
+                <SliderBtn onClick={nextSlideBtn} disabled={disabled}>
+                  <FaAngleRight color="white" />
+                </SliderBtn>
+              </ArrowBox>
+            </SliderConent>
+
             <AnimatePresence
               initial={false}
               onExitComplete={toggleDisabled}
@@ -297,11 +326,28 @@ function Home() {
             </AnimatePresence>
           </Slider>
 
-          {/* popular
-          <Slider className={styles.slider__box}>
-            <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
+          {/* popular */}
+          <Slider>
+            <SliderConent>
+              <StateTitle>넷플릭스 인기 컨텐츠</StateTitle>
+              <ArrowBox>
+                <PrevBtn onClick={prevSlideBtn} disabled={disabled}>
+                  <FaAngleLeft color="white" />
+                </PrevBtn>
+                <SliderBtn onClick={nextSlideBtn} disabled={disabled}>
+                  <FaAngleRight color="white" />
+                </SliderBtn>
+              </ArrowBox>
+            </SliderConent>
+
+            <AnimatePresence
+              initial={false}
+              onExitComplete={toggleDisabled}
+              custom={leaving}
+            >
               <Row
                 variants={slideVars}
+                custom={leaving}
                 initial="hidden"
                 animate="visible"
                 exit="exit"
@@ -331,7 +377,7 @@ function Home() {
                   ))}
               </Row>
             </AnimatePresence>
-          </Slider> */}
+          </Slider>
 
           <AnimatePresence>
             {matchModalBox ? (

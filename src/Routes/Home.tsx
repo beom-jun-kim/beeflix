@@ -13,9 +13,6 @@ function Home() {
     popularMovies
   );
 
-  console.log("nowPlayingMoviesData", nowPlayingMoviesData);
-  console.log("popularMoviesData", popularMoviesData);
-
   const offset = 6;
 
   return (

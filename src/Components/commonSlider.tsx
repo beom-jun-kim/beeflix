@@ -159,6 +159,7 @@ const ArrowBox = styled.div`
 `;
 
 function CommonSlider(moviesData: any, offset: number, text: string) {
+  console.log("moviesData:", moviesData);
   const navigate = useNavigate();
   const matchModalBox = useMatch("movies/:movieId");
   const { scrollY } = useScroll();
@@ -168,7 +169,7 @@ function CommonSlider(moviesData: any, offset: number, text: string) {
   const [disabled, setDisabled] = useState(false);
 
   const nextSlideBtn = () => {
-    if (moviesData && moviesData.results) {
+    if (moviesData) {
       setLeaving(true);
       const totalMovies = moviesData.results.length - 1;
       const maxIndex = Math.floor(totalMovies / offset) - 1;
@@ -178,7 +179,7 @@ function CommonSlider(moviesData: any, offset: number, text: string) {
   };
 
   const prevSlideBtn = () => {
-    if (moviesData && moviesData.results) {
+    if (moviesData) {
       setLeaving(false);
       const totalMovies = moviesData.results.length - 1;
       const maxIndex = Math.floor(totalMovies / offset) - 1;
@@ -248,18 +249,16 @@ function CommonSlider(moviesData: any, offset: number, text: string) {
         <Loader>Loading...</Loader>
       ) : (
         <>
-          {moviesData &&
-            moviesData.results &&
-            moviesData.results.length > 0 && (
-              <MainBanner
-                bgPhoto={makeImagePath(
-                  moviesData?.results[0].backdrop_path || ""
-                )}
-              >
-                <Title>{moviesData?.results[0].title}</Title>
-                <OverView>{moviesData?.results[0].overview}</OverView>
-              </MainBanner>
-            )}
+          {moviesData.results && moviesData.results.length > 0 && (
+            <MainBanner
+              bgPhoto={makeImagePath(
+                moviesData?.results[0].backdrop_path || ""
+              )}
+            >
+              <Title>{moviesData?.results[0].title}</Title>
+              <OverView>{moviesData?.results[0].overview}</OverView>
+            </MainBanner>
+          )}
 
           <Slider>
             <SliderConent>

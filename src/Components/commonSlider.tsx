@@ -168,7 +168,7 @@ function CommonSlider(moviesData: any, offset: number, text: string) {
   const [disabled, setDisabled] = useState(false);
 
   const nextSlideBtn = () => {
-    if (moviesData) {
+    if (moviesData && moviesData.results) {
       setLeaving(true);
       const totalMovies = moviesData.results.length - 1;
       const maxIndex = Math.floor(totalMovies / offset) - 1;
@@ -178,7 +178,7 @@ function CommonSlider(moviesData: any, offset: number, text: string) {
   };
 
   const prevSlideBtn = () => {
-    if (moviesData) {
+    if (moviesData && moviesData.results) {
       setLeaving(false);
       const totalMovies = moviesData.results.length - 1;
       const maxIndex = Math.floor(totalMovies / offset) - 1;
@@ -244,16 +244,22 @@ function CommonSlider(moviesData: any, offset: number, text: string) {
   // <></> : fragment 많은 요소를 공통된 부모없이 연이어서 리턴하는법
   return (
     <Wrapper>
-      {moviesData ? (
+      {!moviesData ? (
         <Loader>Loading...</Loader>
       ) : (
         <>
-          <MainBanner
-            bgPhoto={makeImagePath(moviesData?.results[0].backdrop_path || "")}
-          >
-            <Title>{moviesData?.results[0].title}</Title>
-            <OverView>{moviesData?.results[0].overview}</OverView>
-          </MainBanner>
+          {moviesData &&
+            moviesData.results &&
+            moviesData.results.length > 0 && (
+              <MainBanner
+                bgPhoto={makeImagePath(
+                  moviesData?.results[0].backdrop_path || ""
+                )}
+              >
+                <Title>{moviesData?.results[0].title}</Title>
+                <OverView>{moviesData?.results[0].overview}</OverView>
+              </MainBanner>
+            )}
 
           <Slider>
             <SliderConent>
@@ -282,27 +288,29 @@ function CommonSlider(moviesData: any, offset: number, text: string) {
                 transition={{ type: "tween", duration: 0.5, delay: 0.3 }}
                 key={index}
               >
-                {moviesData?.results
-                  .slice(1)
-                  .slice(offset * index, offset * index + offset)
-                  .map((movie: any) => (
-                    <Box
-                      layoutId={movie.id + ""}
-                      onClick={() => onBoxClicked(movie.id)}
-                      variants={videoVars}
-                      initial="start"
-                      whileHover="hover"
-                      transition={{ type: "tween" }}
-                      key={movie.id}
-                      bgPhoto={makeImagePath(
-                        movie.backdrop_path || movie.poster_path
-                      )}
-                    >
-                      <Info variants={infoVars}>
-                        <InfoTitle>{movie.title}</InfoTitle>
-                      </Info>
-                    </Box>
-                  ))}
+                {moviesData?.results &&
+                  moviesData.results.length > 1 &&
+                  moviesData.results
+                    .slice(1)
+                    .slice(offset * index, offset * index + offset)
+                    .map((movie: any) => (
+                      <Box
+                        layoutId={movie.id + ""}
+                        onClick={() => onBoxClicked(movie.id)}
+                        variants={videoVars}
+                        initial="start"
+                        whileHover="hover"
+                        transition={{ type: "tween" }}
+                        key={movie.id}
+                        bgPhoto={makeImagePath(
+                          movie.backdrop_path || movie.poster_path
+                        )}
+                      >
+                        <Info variants={infoVars}>
+                          <InfoTitle>{movie.title}</InfoTitle>
+                        </Info>
+                      </Box>
+                    ))}
               </Row>
             </AnimatePresence>
           </Slider>

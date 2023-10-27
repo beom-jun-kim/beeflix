@@ -261,7 +261,7 @@ function CommonSlider(moviesData: any, offset: number, text: string) {
           )}
 
           <Slider>
-            <SliderConent>
+            {/* <SliderConent>
               <StateTitle>{text}</StateTitle>
               <ArrowBox>
                 <PrevBtn onClick={prevSlideBtn} disabled={disabled}>
@@ -271,7 +271,7 @@ function CommonSlider(moviesData: any, offset: number, text: string) {
                   <FaAngleRight color="white" />
                 </SliderBtn>
               </ArrowBox>
-            </SliderConent>
+            </SliderConent> */}
 
             <AnimatePresence
               initial={false}

@@ -56,10 +56,10 @@ const Item = styled.li`
   }
 `;
 
-const Circle = styled(motion.span)`
+const CateBorder = styled(motion.span)`
   position: absolute;
-  width: 5px;
-  height: 5px;
+  width: 100%;
+  height: 2px;
   background: ${(prop) => prop.theme.red};
   border-radius: 5px;
   bottom: -5px;
@@ -115,7 +115,7 @@ function Header() {
 
   // 현재 위치 확인
   const homeMatch = useMatch("/");
-  const tvMatch = useMatch("tv");
+  const tvMatch = useMatch("genres");
 
   // useAnimation : animation 컨트롤러를 만들 수 있다
   const inputAnimation = useAnimation();
@@ -182,11 +182,11 @@ function Header() {
         </Link>
         <Items>
           <Item>
-            <Link to="/">Home {homeMatch && <Circle layoutId="circle" />}</Link>
+            <Link to="/">홈 {homeMatch && <CateBorder layoutId="CateBorder" />}</Link>
           </Item>
           <Item>
-            <Link to="tv">
-              Tv shows {tvMatch && <Circle layoutId="circle" />}
+            <Link to="genres">
+              장르 {tvMatch && <CateBorder layoutId="CateBorder" />}
             </Link>
           </Item>
         </Items>

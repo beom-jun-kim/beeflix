@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { makeImagePath } from "../utilities";
-import { motion, AnimatePresence, useScroll } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import { useMatch, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FaAngleRight, FaAngleLeft } from "react-icons/fa";
 import { IMoviesData } from "../Routes/api";
 import Detail from "./detail";
@@ -15,6 +15,11 @@ const Loader = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const LoaderText = styled.h1`
+  color: ${(prop) => prop.theme.white.lighter};
+  font-size: ${(prop) => prop.theme.fontSize.bigFont};
 `;
 
 const Slider = styled.div`
@@ -173,11 +178,12 @@ function CommonSlider({ moviesData, offset, text }: ISliderData) {
     },
   };
 
-  // <></> : fragment 많은 요소를 공통된 부모없이 연이어서 리턴하는법
   return (
     <Wrapper>
       {!moviesData ? (
-        <Loader>Loading...</Loader>
+        <Loader>
+          <LoaderText>Loading...</LoaderText>
+        </Loader>
       ) : (
         <>
           <Slider>
@@ -204,7 +210,7 @@ function CommonSlider({ moviesData, offset, text }: ISliderData) {
                 initial="hidden"
                 animate="visible"
                 exit="exit"
-                transition={{ type: "tween", duration: 0.5, delay: 0.3 }}
+                transition={{ type: "tween", duration: 0.5, delay: 0.2 }}
                 key={index}
               >
                 {moviesData?.results
@@ -233,7 +239,6 @@ function CommonSlider({ moviesData, offset, text }: ISliderData) {
               </Row>
             </AnimatePresence>
           </Slider>
-
           <Detail moviesData={moviesData} />
         </>
       )}

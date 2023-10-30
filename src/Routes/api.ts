@@ -34,9 +34,22 @@ export const nowPlayingMovies = async () => {
   ).json();
 };
 
-
 export const popularTv = async () => {
   return await (
     await fetch(`${BASE_URL}/tv/popular?api_key=${API_KEY}&language=ko`)
   ).json();
 };
+
+export const toBeUpload = async () => {
+  return await (
+    await fetch(`${BASE_URL}/movie/top_rated?api_key=${API_KEY}&language=ko`)
+  ).json();
+};
+
+
+
+// export const genresList = async () => {
+//   return await (
+//     await fetch(`${BASE_URL}/genre/movie/list?api_key=${API_KEY}&language=ko`)
+//   ).json();
+// };

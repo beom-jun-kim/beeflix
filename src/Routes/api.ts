@@ -47,7 +47,6 @@ export const toBeUpload = async () => {
 };
 
 
-
 // export const genresList = async () => {
 //   return await (
 //     await fetch(`${BASE_URL}/genre/movie/list?api_key=${API_KEY}&language=ko`)

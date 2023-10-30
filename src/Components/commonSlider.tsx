@@ -224,7 +224,9 @@ function CommonSlider({ moviesData, offset, text }: ISliderData) {
                       )}
                     >
                       <Info variants={infoVars}>
-                        <InfoTitle>{movie.title}</InfoTitle>
+                        <InfoTitle>
+                          {movie.title ? movie.title : movie.name}
+                        </InfoTitle>
                       </Info>
                     </Box>
                   ))}

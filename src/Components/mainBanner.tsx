@@ -1,4 +1,3 @@
-import { useQuery } from "react-query";
 import styled from "styled-components";
 import { makeImagePath } from "../utilities";
 import { motion } from "framer-motion";

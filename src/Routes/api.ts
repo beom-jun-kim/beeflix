@@ -3,7 +3,8 @@ const BASE_URL = "https://api.themoviedb.org/3";
 
 interface IMovieResults {
   id: number;
-  title: string;
+  title?: string;
+  name?: string;
   overview: string;
   poster_path: string;
   backdrop_path: string;

@@ -81,7 +81,7 @@ function Detail({ moviesData }: IMovieDetail) {
                       )})`,
                     }}
                   />
-                  <DetailTitle>{clickedMovie.title}</DetailTitle>
+                  <DetailTitle>{clickedMovie?.title ? clickedMovie?.title : clickedMovie?.name}</DetailTitle>
                 </DetailMovie>
               </>
             )}

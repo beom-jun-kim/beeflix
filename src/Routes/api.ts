@@ -21,14 +21,21 @@ export interface IMoviesData {
   };
 }
 
-export const getMovies = async () => {
+export const popularMovie = async () => {
+  return await (
+    await fetch(`${BASE_URL}/movie/popular?api_key=${API_KEY}&language=ko`)
+  ).json();
+};
+
+export const nowPlayingMovies = async () => {
   return await (
     await fetch(`${BASE_URL}/movie/now_playing?api_key=${API_KEY}&language=ko`)
   ).json();
 };
 
-export const popularMovies = async () => {
+
+export const popularTv = async () => {
   return await (
-    await fetch(`${BASE_URL}/movie/popular?api_key=${API_KEY}&language=ko`)
+    await fetch(`${BASE_URL}/tv/popular?api_key=${API_KEY}&language=ko`)
   ).json();
 };

@@ -10,7 +10,7 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="movies/:movieId" element={<Home />} /> {/* 두개의 path에서 같은 컴포넌트 렌더링 */}
+        <Route path="videos/:videoId" element={<Home />} /> {/* 두개의 path에서 같은 컴포넌트 렌더링 */}
         <Route path="/tv" element={<Tv />} />
         <Route path="/search" element={<Search />} />
       </Routes>

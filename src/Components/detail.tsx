@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { motion, AnimatePresence, useScroll } from "framer-motion";
 import { useMatch, useNavigate } from "react-router-dom";
-import { popularMovie, IMoviesData } from "../Routes/api";
+import { IMoviesData } from "../Routes/api";
 import { makeImagePath } from "../utilities";
 
 const Overlay = styled(motion.div)`
@@ -14,13 +14,10 @@ const Overlay = styled(motion.div)`
   opacity: 0;
 `;
 
-const DetailBox = styled.div`
-  background-color: ${(prop) => prop.theme.black.lighter};
-  
-height: 100vh;
-`;
-
 const DetailMovie = styled(motion.div)`
+  background-color: ${(prop) => prop.theme.black.lighter};
+  opacity: 0;
+  height: 100vh;
   position: absolute;
   width: 600px;
   left: 0;
@@ -34,6 +31,7 @@ const DetailImg = styled.div`
   background-position: center;
   background-size: cover;
 `;
+
 const DetailTitle = styled.h2`
   color: ${(prop) => prop.theme.white.darker};
   text-align: center;
@@ -54,6 +52,7 @@ function Detail({ moviesData }: IMovieDetail) {
     moviesData?.results.find(
       (movie: any) => movie.id + "" === matchModalBox.params.videoId
     );
+
   return (
     <>
       <AnimatePresence>
@@ -64,27 +63,28 @@ function Detail({ moviesData }: IMovieDetail) {
               exit={{ opacity: 0 }}
               animate={{ opacity: 1 }}
             />
-            <DetailMovie
-              layoutId={matchModalBox.params.videoId}
-              style={{
-                top: scrollY.get() + 30,
-              }}
-            >
-              {clickedMovie && (
-                <>
-                  <DetailBox>
-                    <DetailImg
-                      style={{
-                        backgroundImage: `linear-gradient(to top,black,transparent), url(${makeImagePath(
-                          clickedMovie.backdrop_path
-                        )})`,
-                      }}
-                    />
-                    <DetailTitle>{clickedMovie.title}</DetailTitle>
-                  </DetailBox>
-                </>
-              )}
-            </DetailMovie>
+
+            {clickedMovie && (
+              <>
+                <DetailMovie
+                  layoutId={matchModalBox.params.videoId}
+                  style={{
+                    top: scrollY.get() + 30,
+                  }}
+                  exit={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                >
+                  <DetailImg
+                    style={{
+                      backgroundImage: `linear-gradient(to top,black,transparent), url(${makeImagePath(
+                        clickedMovie.backdrop_path
+                      )})`,
+                    }}
+                  />
+                  <DetailTitle>{clickedMovie.title}</DetailTitle>
+                </DetailMovie>
+              </>
+            )}
           </>
         ) : null}
       </AnimatePresence>

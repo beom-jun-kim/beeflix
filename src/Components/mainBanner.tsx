@@ -2,7 +2,7 @@ import { useQuery } from "react-query";
 import styled from "styled-components";
 import { makeImagePath } from "../utilities";
 import { motion } from "framer-motion";
-import { useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { IMoviesData } from "../Routes/api";
 import Detail from "./detail";
 
@@ -52,6 +52,13 @@ const Loader = styled.div`
 
 const DetailBtn = styled(motion.button)`
   width: 150px;
+  padding: 10px 0;
+  background: none;
+  border: 3px solid ${(prop) => prop.theme.white.lighter};
+  color: ${(prop) => prop.theme.white.lighter};
+  font-size: ${(prop) => prop.theme.fontSize.nomalFont};
+  margin-top: 20px;
+  cursor: pointer;
 `;
 
 interface IMainBanner {
@@ -61,7 +68,7 @@ interface IMainBanner {
 function MainBanner({ moviesData }: IMainBanner) {
   const navigate = useNavigate();
   const onBoxClicked = () => {
-    if(moviesData?.results){
+    if (moviesData?.results) {
       const videoId = moviesData.results[0].id;
       navigate(`/videos/${videoId}`);
     }

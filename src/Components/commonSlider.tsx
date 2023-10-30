@@ -4,7 +4,7 @@ import { motion, AnimatePresence, useScroll } from "framer-motion";
 import { useState } from "react";
 import { useMatch, useNavigate } from "react-router-dom";
 import { FaAngleRight, FaAngleLeft } from "react-icons/fa";
-import { popularMovie, IMoviesData } from "../Routes/api";
+import { IMoviesData } from "../Routes/api";
 import Detail from "./detail";
 
 const Wrapper = styled.div`
@@ -102,9 +102,6 @@ interface ISliderData {
 
 function CommonSlider({ moviesData, offset, text }: ISliderData) {
   const navigate = useNavigate();
-  const matchModalBox = useMatch("videos/:videoId");
-  const { scrollY } = useScroll();
-
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
   const [disabled, setDisabled] = useState(false);

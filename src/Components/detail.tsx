@@ -104,11 +104,17 @@ interface IMovieDetail {
 }
 
 function Detail({ moviesData }: IMovieDetail) {
+  const location = useLocation();
   const { scrollY } = useScroll();
   const navigate = useNavigate();
   const matchModalBox = useMatch("videos/:videoId");
 
-  const overlayClicked = () => navigate("/");
+  const overlayClicked = (videoId: any) => {
+    const currentPath = location.pathname;
+    const path = `videos/${videoId}` ? "/" : `${currentPath}`;
+    navigate(path);
+  };
+
   const clickedMovie =
     matchModalBox?.params.videoId &&
     moviesData?.results.find(

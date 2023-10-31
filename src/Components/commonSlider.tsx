@@ -134,9 +134,6 @@ function CommonSlider({ moviesData, offset, text }: ISliderData) {
   };
 
   const toggleDisabled = () => setDisabled((prev) => !prev);
-  // const onBoxClicked = (videoId: number) => {
-  //   navigate(`/videos/${videoId}`);
-  // };
 
   const onBoxClicked = (videoId: any) => {
     const currentPath = location.pathname;

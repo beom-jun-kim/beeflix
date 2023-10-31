@@ -108,6 +108,9 @@ function Detail({ moviesData }: IMovieDetail) {
   const { scrollY } = useScroll();
   const navigate = useNavigate();
   const matchModalBox = useMatch("videos/:videoId");
+  const nowPath = useMatch(location.pathname);
+
+  console.log("nowPath", nowPath);
 
   const overlayClicked = (videoId: any) => {
     const currentPath = location.pathname;
@@ -120,6 +123,14 @@ function Detail({ moviesData }: IMovieDetail) {
     moviesData?.results.find(
       (movie: any) => movie.id + "" === matchModalBox.params.videoId
     );
+
+  const clickedNowPath =
+    nowPath?.pathname &&
+    moviesData?.results.find(
+      (movie: any) => movie.id + "" === nowPath.pathname
+    );
+
+  console.log("clickedNowPath", clickedNowPath);
 
   const [userIconBtn, setUserIconBtn] = useState({
     checkIconActive: false,
@@ -147,7 +158,11 @@ function Detail({ moviesData }: IMovieDetail) {
             {clickedMovie && (
               <>
                 <DetailMovie
-                  layoutId={matchModalBox.params.videoId}
+                  layoutId={
+                    matchModalBox.params.videoId
+                      ? matchModalBox.params.videoId
+                      : nowPath?.pathname
+                  }
                   style={{
                     top: scrollY.get() + 30,
                   }}

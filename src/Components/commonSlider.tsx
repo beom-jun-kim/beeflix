@@ -55,9 +55,10 @@ const Info = styled(motion.div)`
   background-color: ${(prop) => prop.theme.black.lighter};
   position: absolute;
   bottom: 0;
-  white-space: nowrap;
+  white-space: wrap;
+  word-break: keep-all;
   h4 {
-    font-size: 15px;
+    font-size: ${(prop) => prop.theme.fontSize.smallFont};
     color: ${(prop) => prop.theme.white.darker};
     text-align: center;
   }
@@ -84,7 +85,7 @@ const PrevBtn = styled(SliderBtn)`
 
 const StateTitle = styled.h1`
   color: ${(prop) => prop.theme.white.lighter};
-  font-weight: 400;
+  font-weight: 600;
   font-size: ${(prop) => prop.theme.fontSize.nomalFont};
 `;
 

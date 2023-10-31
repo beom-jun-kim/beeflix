@@ -8,6 +8,7 @@ interface IMovieResults {
   overview: string;
   poster_path: string;
   backdrop_path: string;
+  release_date:string;
 }
 
 export interface IMoviesData {

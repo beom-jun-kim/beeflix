@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { motion, AnimatePresence, useScroll } from "framer-motion";
-import { useMatch, useNavigate } from "react-router-dom";
+import { useMatch, useNavigate, useLocation } from "react-router-dom";
 import { IMoviesData } from "../Routes/api";
 import { makeImagePath } from "../utilities";
 import { FaPlay, FaRegThumbsUp, FaCheck } from "react-icons/fa";
@@ -69,7 +69,8 @@ const UserIconBox = styled.div`
 const SvgBox = styled.div<{ active: boolean }>`
   svg {
     color: ${(props) => (props.active ? "skyblue" : props.theme.white.lighter)};
-    border: thin solid ${(props) => (props.active ? "skyblue" : props.theme.white.lighter)};
+    border: thin solid
+      ${(props) => (props.active ? "skyblue" : props.theme.white.lighter)};
     font-size: 20px;
     border-radius: 50%;
     width: 30px;

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { makeImagePath } from "../utilities";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 import { FaAngleRight, FaAngleLeft } from "react-icons/fa";
 import { IMoviesData } from "../Routes/api";
 import Detail from "./detail";
@@ -108,6 +108,7 @@ interface ISliderData {
 
 function CommonSlider({ moviesData, offset, text }: ISliderData) {
   const navigate = useNavigate();
+  const location = useLocation();
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
   const [disabled, setDisabled] = useState(false);
@@ -133,8 +134,14 @@ function CommonSlider({ moviesData, offset, text }: ISliderData) {
   };
 
   const toggleDisabled = () => setDisabled((prev) => !prev);
-  const onBoxClicked = (videoId: number) => {
-    navigate(`/videos/${videoId}`);
+  // const onBoxClicked = (videoId: number) => {
+  //   navigate(`/videos/${videoId}`);
+  // };
+
+  const onBoxClicked = (videoId: any) => {
+    const currentPath = location.pathname;
+    const path = currentPath === "/" ? `/videos/${videoId}`:`${currentPath}/videos/${videoId}`
+    navigate(path);
   };
 
   // window.outerWidth : 브라우저 전체의 너비

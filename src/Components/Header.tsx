@@ -214,13 +214,15 @@ function Header() {
           </Item>
         </Items>
         <Item>
-          <Link to="new">
-            NEW! 요즘 대세 콘텐츠 {newMatch && <CateBorder layoutId="CateBorder" />}
+          <Link to="weekend">
+            주말! 한번에 몰아보기{" "}
+            {weekendMatch && <CateBorder layoutId="CateBorder" />}
           </Link>
         </Item>
         <Item>
-          <Link to="weekend">
-            주말! 한번에 몰아보기 {weekendMatch && <CateBorder layoutId="CateBorder" />}
+          <Link to="new">
+            NEW! 요즘 대세 콘텐츠{" "}
+            {newMatch && <CateBorder layoutId="CateBorder" />}
           </Link>
         </Item>
       </Col>

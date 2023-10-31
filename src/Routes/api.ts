@@ -8,7 +8,7 @@ interface IMovieResults {
   overview: string;
   poster_path: string;
   backdrop_path: string;
-  release_date:string;
+  release_date: string;
 }
 
 export interface IMoviesData {
@@ -21,6 +21,15 @@ export interface IMoviesData {
     maximum: string;
     minimum: string;
   };
+}
+
+interface IGenresResults {
+  id: number;
+  name: string;
+}
+
+export interface IGenresProp {
+  genres: IGenresResults[];
 }
 
 export const popularMovie = async () => {
@@ -47,9 +56,8 @@ export const toBeUpload = async () => {
   ).json();
 };
 
-
-// export const genresList = async () => {
-//   return await (
-//     await fetch(`${BASE_URL}/genre/movie/list?api_key=${API_KEY}&language=ko`)
-//   ).json();
-// };
+export const genresList = async () => {
+  return await (
+    await fetch(`${BASE_URL}/genre/movie/list?api_key=${API_KEY}&language=ko`)
+  ).json();
+};

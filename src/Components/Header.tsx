@@ -1,3 +1,4 @@
+import { useQuery } from "react-query";
 import styled from "styled-components";
 import {
   motion,
@@ -8,6 +9,7 @@ import {
 import { Link, useMatch, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { IGenresProp, genresList } from "../Routes/api";
 
 const Nav = styled(motion.nav)`
   display: flex;
@@ -17,7 +19,7 @@ const Nav = styled(motion.nav)`
   z-index: 9999;
   width: 100%;
   top: 0;
-  font-size: 14px;
+  font-size: ${(prop) => prop.theme.fontSize.smallFont};
   padding: 20px 60px;
   color: white;
 `;
@@ -93,6 +95,17 @@ const Input = styled(motion.input)`
   border: 1px solid ${(props) => props.theme.white.darker};
 `;
 
+const Select = styled.select`
+  color: white;
+  background: black;
+  padding: 5px;
+  border: 3px solid #fff;
+  outline: none;
+  cursor: pointer;
+`;
+
+const Option = styled.option``;
+
 const logoVars = {
   normal: {
     fillOpacity: 1,
@@ -111,6 +124,8 @@ interface IForm {
 }
 
 function Header() {
+  const { data } = useQuery<IGenresProp>(["genres"], genresList);
+
   const [searchOpen, setSearchOpen] = useState(false);
 
   // 현재 위치 확인
@@ -122,7 +137,7 @@ function Header() {
   const navAnimation = useAnimation();
 
   // form
-  const { register, handleSubmit, setValue } = useForm<IForm>();
+  const { register, handleSubmit } = useForm<IForm>();
   const navigate = useNavigate();
   const onValid = (data: IForm) => {
     navigate(`/search?keyword=${data.keyword}`);
@@ -182,14 +197,31 @@ function Header() {
         </Link>
         <Items>
           <Item>
-            <Link to="/">홈 {homeMatch && <CateBorder layoutId="CateBorder" />}</Link>
-          </Item>
-          <Item>
-            <Link to="genres">
-              장르 {tvMatch && <CateBorder layoutId="CateBorder" />}
+            <Link to="/">
+              홈 {homeMatch && <CateBorder layoutId="CateBorder" />}
             </Link>
           </Item>
+          <Item>
+            <Select>
+              {data?.genres.map((item: any) => (
+                <Option key={item.id}>
+                  <Link to={item.id}>{item.name}</Link>
+                </Option>
+              ))}
+            </Select>
+            {/* 장르 {tvMatch && <CateBorder layoutId="CateBorder" />} */}
+          </Item>
         </Items>
+        <Item>
+          <Link to="/">
+            NEW! 요즘 대세 콘텐츠 {homeMatch && <CateBorder layoutId="CateBorder" />}
+          </Link>
+        </Item>
+        <Item>
+          <Link to="/">
+            주말! 한번에 몰아보기 {homeMatch && <CateBorder layoutId="CateBorder" />}
+          </Link>
+        </Item>
       </Col>
       <Col>
         <Search onSubmit={handleSubmit(onValid)}>

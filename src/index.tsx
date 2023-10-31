@@ -30,7 +30,6 @@ const GlobalStyle = createGlobalStyle`
     font-size: 100%;
     font: inherit;
     vertical-align: baseline;
-    font-family: 'NanumSquare';
   }
   html {
     overflow-x:hidden;
@@ -38,6 +37,10 @@ const GlobalStyle = createGlobalStyle`
   article, aside, details, figcaption, figure,
   footer, header, hgroup, main, menu, nav, section {
     display: block;
+  }
+
+  * {
+  font-family: 'NanumSquare';
   }
   
   *[hidden] {

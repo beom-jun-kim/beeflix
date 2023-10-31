@@ -130,7 +130,8 @@ function Header() {
 
   // 현재 위치 확인
   const homeMatch = useMatch("/");
-  const tvMatch = useMatch("genres");
+  const newMatch = useMatch("new");
+  const weekendMatch = useMatch("weekend");
 
   // useAnimation : animation 컨트롤러를 만들 수 있다
   const inputAnimation = useAnimation();
@@ -213,13 +214,13 @@ function Header() {
           </Item>
         </Items>
         <Item>
-          <Link to="/">
-            NEW! 요즘 대세 콘텐츠 {homeMatch && <CateBorder layoutId="CateBorder" />}
+          <Link to="new">
+            NEW! 요즘 대세 콘텐츠 {newMatch && <CateBorder layoutId="CateBorder" />}
           </Link>
         </Item>
         <Item>
-          <Link to="/">
-            주말! 한번에 몰아보기 {homeMatch && <CateBorder layoutId="CateBorder" />}
+          <Link to="weekend">
+            주말! 한번에 몰아보기 {weekendMatch && <CateBorder layoutId="CateBorder" />}
           </Link>
         </Item>
       </Col>

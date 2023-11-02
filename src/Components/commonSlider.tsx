@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { makeImagePath } from "../utilities";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import { useNavigate,useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { FaAngleRight, FaAngleLeft } from "react-icons/fa";
 import { IMoviesData } from "../Routes/api";
 import Detail from "./detail";
@@ -23,6 +23,7 @@ const LoaderText = styled.h1`
 `;
 
 const Slider = styled.div`
+  height: 250px;
   position: relative;
   margin-bottom: 80px;
 `;
@@ -31,6 +32,8 @@ const Row = styled(motion.div)`
   display: grid;
   gap: 10px;
   grid-template-columns: repeat(6, 1fr);
+  position: absolute;
+  width: 100%;
 `;
 
 const Box = styled(motion.div)<{ bgPhoto: string }>`
@@ -137,7 +140,10 @@ function CommonSlider({ moviesData, offset, text }: ISliderData) {
 
   const onBoxClicked = (videoId: any) => {
     const currentPath = location.pathname;
-    const path = currentPath === "/" ? `/videos/${videoId}`:`${currentPath}/videos/${videoId}`
+    const path =
+      currentPath === "/"
+        ? `/videos/${videoId}`
+        : `${currentPath}/videos/${videoId}`;
     navigate(path);
   };
 

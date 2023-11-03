@@ -161,7 +161,6 @@ function Header() {
   // scroll
   const { scrollY } = useScroll();
 
-  // variants
   const navVars = {
     top: {
       backgroundImage: "linear-gradient(180deg,rgba(0,0,0,.7) 10%,transparent)",

@@ -1,7 +1,12 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { motion, AnimatePresence, useScroll } from "framer-motion";
-import { useMatch, useNavigate, useLocation } from "react-router-dom";
+import {
+  useMatch,
+  useParams,
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
 import { IMoviesData } from "../Routes/api";
 import { makeImagePath } from "../utilities";
 import { FaPlay, FaRegThumbsUp, FaCheck } from "react-icons/fa";
@@ -104,33 +109,17 @@ interface IMovieDetail {
 }
 
 function Detail({ moviesData }: IMovieDetail) {
-  const location = useLocation();
   const { scrollY } = useScroll();
   const navigate = useNavigate();
-  const matchModalBox = useMatch("videos/:videoId");
-  const nowPath = useMatch(location.pathname);
+  const params = useParams();
 
-  console.log("nowPath", nowPath);
-
-  const overlayClicked = (videoId: any) => {
-    const currentPath = location.pathname;
-    const path = `videos/${videoId}` ? "/" : `${currentPath}`;
-    navigate(path);
+  const overlayClicked = () => {
+    navigate(-1);
   };
 
   const clickedMovie =
-    matchModalBox?.params.videoId &&
-    moviesData?.results.find(
-      (movie: any) => movie.id + "" === matchModalBox.params.videoId
-    );
-
-  const clickedNowPath =
-    nowPath?.pathname &&
-    moviesData?.results.find(
-      (movie: any) => movie.id + "" === nowPath.pathname
-    );
-
-  console.log("clickedNowPath", clickedNowPath);
+    params.videoId &&
+    moviesData?.results.find((movie: any) => movie.id == params.videoId);
 
   const [userIconBtn, setUserIconBtn] = useState({
     checkIconActive: false,
@@ -147,7 +136,7 @@ function Detail({ moviesData }: IMovieDetail) {
   return (
     <>
       <AnimatePresence>
-        {matchModalBox ? (
+        {params.videoId ? (
           <>
             <Overlay
               onClick={overlayClicked}
@@ -158,11 +147,7 @@ function Detail({ moviesData }: IMovieDetail) {
             {clickedMovie && (
               <>
                 <DetailMovie
-                  layoutId={
-                    matchModalBox.params.videoId
-                      ? matchModalBox.params.videoId
-                      : nowPath?.pathname
-                  }
+                  layoutId={params.videoId}
                   style={{
                     top: scrollY.get() + 30,
                   }}

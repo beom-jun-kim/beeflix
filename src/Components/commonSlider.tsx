@@ -42,6 +42,7 @@ const Box = styled(motion.div)<{ bgPhoto: string }>`
   background-image: url(${(prop) => prop.bgPhoto});
   background-size: cover;
   background-position: center center;
+  cursor: pointer;
   &:first-child {
     transform-origin: center left;
   }

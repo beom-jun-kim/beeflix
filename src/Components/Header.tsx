@@ -77,22 +77,22 @@ const Search = styled.form`
   display: flex;
   align-items: center;
   svg {
-    height: 25px;
+    height: 23px;
   }
 `;
 
 const Input = styled(motion.input)`
   // 변화가 시작되는 위치
   transform-origin: right center;
-  height: 35px;
+  height: 36px;
   position: absolute;
   z-index: -1;
-  left: -180px;
+  left: -183px;
   padding-left: 35px;
   background-color: black;
   color: ${(props) => props.theme.white.darker};
   outline: none;
-  border: 1px solid ${(props) => props.theme.white.darker};
+  border: 3px solid ${(props) => props.theme.white.darker};
 `;
 
 const Select = styled.select`

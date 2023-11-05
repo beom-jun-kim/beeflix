@@ -163,6 +163,7 @@ function Header() {
 
   const navVars = {
     top: {
+      background: "rgba(0,0,0,0)",
       backgroundImage: "linear-gradient(180deg,rgba(0,0,0,.7) 10%,transparent)",
     },
     scroll: {

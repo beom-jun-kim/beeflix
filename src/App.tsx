@@ -1,4 +1,4 @@
-import { HashRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./Routes/Home";
 import Search from "./Routes/Search";
 import Header from "./Components/header";
@@ -16,7 +16,7 @@ function App() {
         <Route path="new/videos/:videoId" element={<New />} />
         <Route path="weekend" element={<Weekend />} />
         <Route path="weekend/videos/:videoId" element={<Weekend />} />
-        <Route path="search" element={<Search />} />
+        <Route path="/search" element={<Search />} />
         <Route path="search/videos/:videoId" element={<Search />} />
       </Routes>
     </Router>

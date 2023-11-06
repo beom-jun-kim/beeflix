@@ -69,7 +69,8 @@ function Search() {
   const [moviesLender, setMoviesLender] = useState<IMoviesData | undefined>();
 
   const onBoxClicked = (videoId: any) => {
-    const currentPath = window.location.pathname;
+    // eslint-disable-next-line no-restricted-globals
+    const currentPath = location.pathname;
     const query = `?keyword=${keyword}`;
     const path = `${currentPath}/videos/${videoId}${query}`;
     navigate(path);

@@ -70,9 +70,8 @@ function Search() {
 
   const onBoxClicked = (videoId: any) => {
     // eslint-disable-next-line no-restricted-globals
-    const currentPath = location.pathname;
     const query = `?keyword=${keyword}`;
-    const path = `${currentPath}/videos/${videoId}${query}`;
+    const path = `/search/videos/${videoId}${query}`;
     navigate(path);
   };
 

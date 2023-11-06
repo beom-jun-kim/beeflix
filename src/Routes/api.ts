@@ -61,3 +61,9 @@ export const genresList = async () => {
     await fetch(`${BASE_URL}/genre/movie/list?api_key=${API_KEY}&language=ko`)
   ).json();
 };
+
+export const search = async (keyword:string) => {
+  return await (
+    await fetch(`${BASE_URL}/search/multi?api_key=${API_KEY}&query=${keyword}&include_adult=false&language=ko&page=1`)
+  ).json();
+};

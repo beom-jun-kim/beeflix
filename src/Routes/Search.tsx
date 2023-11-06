@@ -1,15 +1,99 @@
-import { useLocation } from "react-router-dom";
+import { useQuery } from "react-query";
+import { IMoviesData, search } from "./api";
+import { useLocation, useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import { makeImagePath } from "../utilities";
+import Detail from "../Components/detail";
+import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useState } from "react";
+
+const Wrapper = styled.div`
+  padding: 150px 100px;
+`;
+
+const MovieListBox = styled.ul`
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+`;
+
+const MovieList = styled(motion.li)`
+  width: 20%;
+  height: 200px;
+  color: ${(prop) => prop.theme.white.lighter};
+  padding: 10px;
+  margin-bottom: 100px;
+  cursor: pointer;
+`;
+
+const Poster = styled.div<{ bgPhoto: string }>`
+  width: 100%;
+  height: 100%;
+  background: url(${(prop) => prop.bgPhoto}) no-repeat center/cover;
+`;
+
+const Info = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
+  padding: 15px;
+  background-color: ${(prop) => prop.theme.black.lighter};
+  white-space: wrap;
+  word-break: keep-all;
+  h4 {
+    font-size: ${(prop) => prop.theme.fontSize.smallFont};
+    color: ${(prop) => prop.theme.white.lighter};
+  }
+`;
+
+const Title = styled.h4``;
 
 function Search() {
-    // location : 현재 위치한 path에 관한 정보를 얻을 수 있다
-    const loaction = useLocation();
+  const navigate = useNavigate();
+  const loaction = useLocation();
+  const keyword = new URLSearchParams(loaction.search).get("keyword") || "";
+  const { data: searchData } = useQuery<IMoviesData>(["search", keyword], () =>
+    search(keyword)
+  );
+  const [moviesLender, setMoviesLender] = useState<IMoviesData | undefined>();
 
-    // URLSearchParams : url에서 특정 쿼리 문자열을 가져오거나 수정할 때 사용
-    const keyword = new URLSearchParams(loaction.search).get("keyword");
+  const onBoxClicked = (videoId: any) => {
+    const currentPath = window.location.pathname;
+    const path =
+      currentPath === "/"
+        ? `/videos/${videoId}`
+        : `${currentPath}/videos/${videoId}`;
+    navigate(path);
+  };
 
-    return null;
+  useEffect(() => {
+    if (searchData) {
+      setMoviesLender(searchData);
+    }
+  }, [searchData]);
+
+  return (
+    <Wrapper>
+      <MovieListBox>
+        {searchData?.results.map((movie) => (
+          <MovieList
+            key={movie.id}
+            onClick={() => onBoxClicked(movie.id)}
+            layoutId={movie.id + ""}
+          >
+            <Poster
+              bgPhoto={makeImagePath(movie.backdrop_path || movie.poster_path)}
+            ></Poster>
+            <Info>
+              <Title>{movie.title ? movie.title : movie.name}</Title>
+            </Info>
+          </MovieList>
+        ))}
+      </MovieListBox>
+      <Detail moviesData={searchData} />
+    </Wrapper>
+  );
 }
 
 export default Search;
-
-// 1. 더많은 api  / 2. 검색 결과 화면 / 3. header 컴포넌트 카테고리 완성 / 4. css 완성

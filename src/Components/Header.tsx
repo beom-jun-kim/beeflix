@@ -141,6 +141,7 @@ function Header() {
   const { register, handleSubmit } = useForm<IForm>();
   const navigate = useNavigate();
   const onValid = (data: IForm) => {
+    console.log("data",data);
     navigate(`/search?keyword=${data.keyword}`);
   };
 
@@ -212,19 +213,19 @@ function Header() {
             </Select>
             {/* 장르 {tvMatch && <CateBorder layoutId="CateBorder" />} */}
           </Item>
+          <Item>
+            <Link to="weekend">
+              주말! 한번에 몰아보기{" "}
+              {weekendMatch && <CateBorder layoutId="CateBorder" />}
+            </Link>
+          </Item>
+          <Item>
+            <Link to="new">
+              NEW! 요즘 대세 콘텐츠{" "}
+              {newMatch && <CateBorder layoutId="CateBorder" />}
+            </Link>
+          </Item>
         </Items>
-        <Item>
-          <Link to="weekend">
-            주말! 한번에 몰아보기{" "}
-            {weekendMatch && <CateBorder layoutId="CateBorder" />}
-          </Link>
-        </Item>
-        <Item>
-          <Link to="new">
-            NEW! 요즘 대세 콘텐츠{" "}
-            {newMatch && <CateBorder layoutId="CateBorder" />}
-          </Link>
-        </Item>
       </Col>
       <Col>
         <Search onSubmit={handleSubmit(onValid)}>

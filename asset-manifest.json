@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/beeflix/static/js/main.b9820183.js",
+    "main.js": "/beeflix/static/js/main.7125d9ea.js",
     "index.html": "/beeflix/index.html",
-    "main.b9820183.js.map": "/beeflix/static/js/main.b9820183.js.map"
+    "main.7125d9ea.js.map": "/beeflix/static/js/main.7125d9ea.js.map"
   },
   "entrypoints": [
-    "static/js/main.b9820183.js"
+    "static/js/main.7125d9ea.js"
   ]
 }

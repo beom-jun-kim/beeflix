@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./Routes/Home";
 import Search from "./Routes/Search";
 import Header from "./Components/header";
@@ -7,7 +7,7 @@ import Weekend from "./Routes/Weekend";
 
 function App() {
   return (
-    <Router>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -19,7 +19,7 @@ function App() {
         <Route path="/search" element={<Search />} />
         <Route path="search/videos/:videoId" element={<Search />} />
       </Routes>
-    </Router>
+    </BrowserRouter>
   );
 }
 

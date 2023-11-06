@@ -16,7 +16,7 @@ function App() {
         <Route path="new/videos/:videoId" element={<New />} />
         <Route path="weekend" element={<Weekend />} />
         <Route path="weekend/videos/:videoId" element={<Weekend />} />
-        <Route path="/search" element={<Search />} />
+        <Route path="search" element={<Search />} />
         <Route path="search/videos/:videoId" element={<Search />} />
       </Routes>
     </BrowserRouter>

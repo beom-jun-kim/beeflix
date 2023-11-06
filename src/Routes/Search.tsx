@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { makeImagePath } from "../utilities";
 import Detail from "../Components/detail";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
 const Wrapper = styled.div`
@@ -17,6 +17,18 @@ const MovieListBox = styled.ul`
   flex-wrap: wrap;
 `;
 
+const PosterBox = styled.div`
+  overflow: hidden;
+  height: 100%;
+`;
+
+const Poster = styled.div<{ bgPhoto: string }>`
+  width: 100%;
+  height: 100%;
+  background: url(${(prop) => prop.bgPhoto}) no-repeat center/cover;
+  transition: 0.2s;
+`;
+
 const MovieList = styled(motion.li)`
   width: 20%;
   height: 200px;
@@ -24,12 +36,9 @@ const MovieList = styled(motion.li)`
   padding: 10px;
   margin-bottom: 100px;
   cursor: pointer;
-`;
-
-const Poster = styled.div<{ bgPhoto: string }>`
-  width: 100%;
-  height: 100%;
-  background: url(${(prop) => prop.bgPhoto}) no-repeat center/cover;
+  &:hover ${Poster} {
+    transform: scale(1.05);
+  }
 `;
 
 const Info = styled.div`
@@ -44,6 +53,7 @@ const Info = styled.div`
   h4 {
     font-size: ${(prop) => prop.theme.fontSize.smallFont};
     color: ${(prop) => prop.theme.white.lighter};
+    line-height: 20px;
   }
 `;
 
@@ -82,16 +92,20 @@ function Search() {
             onClick={() => onBoxClicked(movie.id)}
             layoutId={movie.id + ""}
           >
-            <Poster
-              bgPhoto={makeImagePath(movie.backdrop_path || movie.poster_path)}
-            ></Poster>
+            <PosterBox>
+              <Poster
+                bgPhoto={makeImagePath(
+                  movie.backdrop_path || movie.poster_path
+                )}
+              ></Poster>
+            </PosterBox>
             <Info>
               <Title>{movie.title ? movie.title : movie.name}</Title>
             </Info>
           </MovieList>
         ))}
+        <Detail moviesData={searchData} />
       </MovieListBox>
-      <Detail moviesData={searchData} />
     </Wrapper>
   );
 }

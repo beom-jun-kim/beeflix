@@ -49,7 +49,6 @@ function Home() {
         text="떴다! 넷플릭스 신작"
       />
 
-
       <CommonSlider
         moviesData={toBoUploadData}
         offset={offset}

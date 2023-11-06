@@ -13,7 +13,7 @@ const Wrapper = styled.div`
 
 const MovieListBox = styled.ul`
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
   flex-wrap: wrap;
 `;
 
@@ -37,7 +37,7 @@ const MovieList = styled(motion.li)`
   margin-bottom: 100px;
   cursor: pointer;
   &:hover ${Poster} {
-    transform: scale(1.05);
+    transform: scale(1.03);
   }
 `;
 
@@ -70,10 +70,8 @@ function Search() {
 
   const onBoxClicked = (videoId: any) => {
     const currentPath = window.location.pathname;
-    const path =
-      currentPath === "/"
-        ? `/videos/${videoId}`
-        : `${currentPath}/videos/${videoId}`;
+    const query = `?keyword=${keyword}`;
+    const path = `${currentPath}/videos/${videoId}${query}`;
     navigate(path);
   };
 

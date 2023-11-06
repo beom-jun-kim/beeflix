@@ -6,7 +6,7 @@ import { createGlobalStyle } from "styled-components";
 import { darkTheme } from "./theme";
 import { RecoilRoot } from "recoil";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { HashRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 
 const queryClient = new QueryClient();
 
@@ -89,10 +89,10 @@ root.render(
     <RecoilRoot>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider theme={darkTheme}>
-          <HashRouter>
+          <BrowserRouter basename={process.env.PUBLIC_URL}>
             <GlobalStyle />
             <App />
-          </HashRouter>
+          </BrowserRouter>
         </ThemeProvider>
       </QueryClientProvider>
     </RecoilRoot>

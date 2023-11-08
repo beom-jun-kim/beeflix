@@ -2,6 +2,9 @@
 넷플릭스 클론코딩입니다
 <br>
 <br>
+<img src="https://github.com/beom-jun-kim/beeflix/assets/84590988/130e9e97-e040-41ec-9fb6-e870120b2909">
+<br>
+<br>
 
 # 🕰️ 개발기간
 * 23.05.03일 - 23.06.10일
@@ -26,6 +29,9 @@
 
 ### 디테일 페이지
 - 업로드 데이터 , 이미지 , 줄거리 , 제목 데이터 바인딩
+<br>
+<img src="https://github.com/beom-jun-kim/beeflix/assets/84590988/7dfcf3f1-003a-4701-894a-5855831b4cbb">
+
 
 ### 검색기능
 <br>
